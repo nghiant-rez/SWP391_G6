@@ -1,0 +1,45 @@
+# MAVEN BUILD OUTPUT
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+
+# INTELLIJ IDEA (Critical for Mixed Teams)
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+
+# NETBEANS (Critical for Mixed Teams)
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+
+# ECLIPSE / VS CODE (Just in case)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+.vscode/
+
+
+# OPERATING SYSTEM FILES
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+*~
+
+
+# APPLICATION-SPECIFIC
+*.log
+.env

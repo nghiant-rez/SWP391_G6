@@ -5,19 +5,8 @@
 <html>
 <head>
     <title>SWP391 Group 6 - System Check</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
-        .box {
-            border: 1px solid #ccc;
-            padding: 20px;
-            display: inline-block;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .success { color: green; font-weight: bold; }
-        .error { color: red; font-weight: bold; }
-        h1 { color: #333; }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+
 </head>
 <body>
 
@@ -25,7 +14,7 @@
     <h1>SWP391 Environment Check</h1>
     <hr/>
 
-    <p>Tomcat Status: <span class="success">Running (Jakarta EE 10)</span></p>
+    <p>Tomcat Status: <span style="color:green; font-weight:bold;">Running (Jakarta EE 10)</span></p>
 
     <p>Database Status:</p>
     <h3 class="${statusClass}">${message}</h3>

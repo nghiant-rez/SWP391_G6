@@ -1,9 +1,6 @@
-DROP
-DATABASE IF EXISTS swp391_demo;
-CREATE
-DATABASE swp391_demo;
-USE
-swp391_demo;
+DROP DATABASE IF EXISTS swp391_demo;
+CREATE DATABASE swp391_demo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE swp391_demo;
 
 -- 1. ROLES
 CREATE TABLE `roles`

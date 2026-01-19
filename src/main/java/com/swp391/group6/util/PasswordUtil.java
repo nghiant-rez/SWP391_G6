@@ -12,7 +12,7 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class PasswordUtil {
     
-    // mã hóa pass
+    // mã hóa password
     public static String hashPassword(String plainPassword){
         return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
     }

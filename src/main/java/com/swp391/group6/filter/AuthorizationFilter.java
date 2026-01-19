@@ -28,7 +28,7 @@ public class AuthorizationFilter implements Filter {
     static {
         // === IMPORTANT: Order from MOST SPECIFIC to LEAST SPECIFIC ===
 
-        // Member 3: Admin User Management (most specific first)
+        //Admin User Management (most specific first)
         PERMISSION_MAP.put("/admin/users/delete", "USER_DELETE");
         PERMISSION_MAP.put("/admin/users/edit", "USER_UPDATE");
         PERMISSION_MAP.put("/admin/users/update", "USER_UPDATE");
@@ -38,7 +38,7 @@ public class AuthorizationFilter implements Filter {
         PERMISSION_MAP.put("/admin/users/view", "USER_READ");
         PERMISSION_MAP.put("/admin/users", "USER_READ");
 
-        // You: Admin Advanced (Role Management)
+        //Admin Advanced (Role Management)
         PERMISSION_MAP.put("/admin/roles/permissions", "ROLE_UPDATE");
         PERMISSION_MAP.put("/admin/roles/edit", "ROLE_UPDATE");
         PERMISSION_MAP.put("/admin/roles/view", "ROLE_READ");

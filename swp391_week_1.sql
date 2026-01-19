@@ -23,6 +23,8 @@ CREATE TABLE `users`
     `password`  VARCHAR(255) NOT NULL,
     `fullName`  VARCHAR(100) NOT NULL,
     `gender`    ENUM('MALE', 'FEMALE', 'OTHER') DEFAULT 'OTHER',
+    `phone`     VARCHAR(15),
+    `address`   VARCHAR(255),
     `avatarUrl` VARCHAR(255),
     `roleId`    INT,
     `status`    TINYINT(1) DEFAULT 1, -- 1: Active, 0: Banned
@@ -58,67 +60,78 @@ CREATE TABLE `rolePermissions`
     FOREIGN KEY (`permissionId`) REFERENCES `permissions` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-
+-- ========================================
 -- SEED DATA
--- 1. Roles
+
+-- 1.  Roles
 INSERT INTO `roles` (`name`, `description`)
 VALUES ('ADMINISTRATOR', 'Full system access'),
        ('MANAGER', 'Manage staff and products'),
        ('STAFF', 'Process orders'),
        ('CUSTOMER', 'Buy products');
 
--- 2. Permissions
+-- 2. Permissions (Complete Set)
 INSERT INTO `permissions` (`name`, `displayName`, `description`)
-VALUES ('USER_READ', 'View Users', 'Can see user list'),
-       ('USER_CREATE', 'Create User', 'Can add new users'),
-       ('USER_UPDATE', 'Edit User', 'Can update user details'),
-       ('USER_DELETE', 'Delete User', 'Can soft delete users'),
-       ('PRODUCT_MANAGE', 'Manage Products', 'Full access to product catalog');
+VALUES 
+-- User Management
+('USER_READ', 'View Users', 'Can see user list'),
+('USER_CREATE', 'Create User', 'Can add new users'),
+('USER_UPDATE', 'Edit User', 'Can update user details'),
+('USER_DELETE', 'Delete User', 'Can soft delete users'),
 
+-- Product Management
+('PRODUCT_MANAGE', 'Manage Products', 'Full access to product catalog'),
 
+-- Role Management (NEW - for your Admin Advanced features)
+('ROLE_READ', 'View Roles', 'Can see role list and details'),
+('ROLE_UPDATE', 'Manage Roles', 'Can edit role permissions');
 
+-- 3. Assign Permissions to Roles
+-- ADMINISTRATOR gets ALL permissions
 INSERT INTO `rolePermissions` (`roleId`, `permissionId`)
-SELECT 1, id
-FROM `permissions`;
+SELECT 1, id FROM `permissions`;
 
--- Manager gets Product management and User Read
+-- MANAGER gets Product management and User Read
 INSERT INTO `rolePermissions` (`roleId`, `permissionId`)
 VALUES (2, 5), -- PRODUCT_MANAGE
        (2, 1); -- USER_READ
 
+-- 4. Create Users (Password: 123456 - Bcrypt hashed)
+INSERT INTO `users` (`email`, `password`, `fullName`, `gender`, `phone`, `address`, `roleId`, `status`)
+VALUES 
+('admin@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'System Administrator', 'MALE', '0901234567', 'Hanoi, Vietnam', 1, 1),
+('manager@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Manager One', 'FEMALE', '0901234568', 'Da Nang, Vietnam', 2, 1),
+('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Sales Staff', 'MALE', '0901234569', 'Ho Chi Minh, Vietnam', 3, 1),
+('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Deleted Customer', 'OTHER', '0000000000', 'Unknown', 4, 0);
 
--- Passwords are now Hashed Bcrypt ($2b$10$...) instead of plain text "123456"
-INSERT INTO `users` (`email`, `password`, `fullName`, `gender`, `roleId`, `status`)
-VALUES ('admin@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'System Administrator',
-        'MALE', 1, 1),
-       ('manager@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Manager One', 'FEMALE', 2,
-        1),
-       ('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Sales Staff', 'MALE', 3, 1),
-       ('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Deleted Customer',
-        'OTHER', 4, 0);
+-- Set Admin (ID 1) as the creator
+UPDATE `users` SET `createdBy` = 1 WHERE `id` IN (1, 2, 3, 4);
 
--- Set Admin (ID 1) as the creator of everyone
-UPDATE `users`
-SET `createdBy` = 1
-WHERE `id` IN (1, 2, 3, 4);
+-- Mark deleted user
+UPDATE `users` SET `isDeleted` = 1, `deletedBy` = 1 WHERE `id` = 4;
 
--- Mark the 4th user as deleted by Admin
-UPDATE `users`
-SET `isDeleted` = 1,
-    `deletedBy` = 1
-WHERE `id` = 4;
-
-
+-- ========================================
 -- VERIFICATION QUERIES
--- Check Permissions for ADMIN
-SELECT r.name AS role, p.displayName AS permission
+
+-- Check Admin Permissions
+SELECT 
+    r. name AS role,
+    p. name AS permission,
+    p. displayName
 FROM roles r
-         JOIN rolePermissions rp ON r.id = rp.roleId
-         JOIN permissions p ON rp.permissionId = p.id
-WHERE r.name = 'ADMINISTRATOR';
+JOIN rolePermissions rp ON r. id = rp.roleId
+JOIN permissions p ON rp.permissionId = p.id
+WHERE r.name = 'ADMINISTRATOR'
+ORDER BY p.name;
 
 -- Check Active Users
-SELECT email, fullName, r.name AS role
+SELECT 
+    u.id,
+    u.email,
+    u.fullName,
+    r.name AS role,
+    u.status
 FROM users u
-         LEFT JOIN roles r ON u.roleId = r.id
-WHERE u.isDeleted = 0;
+LEFT JOIN roles r ON u.roleId = r.id
+WHERE u.isDeleted = 0
+ORDER BY u.id;

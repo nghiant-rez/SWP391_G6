@@ -31,14 +31,14 @@ public class UserDaoImpl implements UserDao{
                 return null;
             }
             
-            String sql = "SELECT user_id, email, password, fullname FROM users WHERE email = ?";
+            String sql = "SELECT id, email, password, fullname FROM users WHERE email = ?";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, sql);
+            ps.setString(1, email);
             rs = ps.executeQuery();
             
             if(rs.next()){
                 user = new User();
-                user.setId(rs.getInt("user_id"));
+                user.setId(rs.getInt("id"));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setFullname(rs.getString("fullname"));
@@ -47,9 +47,9 @@ public class UserDaoImpl implements UserDao{
             e.printStackTrace();
         } finally {
             try {
-                if(ps != null) rs.close();
+                if(rs != null) rs.close();
                 if(ps != null) ps.close();
-                if(conn != null) rs.close();
+                if(conn != null) conn.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

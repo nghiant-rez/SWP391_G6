@@ -13,6 +13,7 @@
     </head>
     <body>
         <h1>Login</h1>
+        
         <% String error = (String) request.getAttribute("error");%>
         <% if(error != null) { %>
             <p style="color: red;"><%= error %></p>

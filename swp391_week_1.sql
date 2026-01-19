@@ -104,8 +104,27 @@ VALUES
 ('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Sales Staff', 'MALE', '0901234569', 'Ho Chi Minh, Vietnam', 3, 1),
 ('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Deleted Customer', 'OTHER', '0000000000', 'Unknown', 4, 0);
 
--- Set Admin (ID 1) as the creator
-UPDATE `users` SET `createdBy` = 1 WHERE `id` IN (1, 2, 3, 4);
+-- Passwords are now Hashed Bcrypt ($2b$10$...) instead of plain text "123456"
+-- tôi bỏ dấu chấm ở cuối mật khẩu vì nó ảnh hướng đến việc đồng bộ mật khẩu và đáu chấm đó thừa
+INSERT INTO `users` (`email`, `password`, `fullName`, `gender`, `roleId`, `status`)
+VALUES ('admin@gmail.com', '$2a$10$lK39S1iEwTZcVFTniBcjTOeGKplyv8y8DVqS.DvN0Jps2K7thzwOi', 'System Administrator',
+        'MALE', 1, 1),
+       ('manager@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Manager One', 'FEMALE', 2,
+        1),
+       ('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Sales Staff', 'MALE', 3, 1),
+       ('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Deleted Customer',
+        'OTHER', 4, 0);
+
+-- Set Admin (ID 1) as the creator of everyone
+UPDATE `users`
+SET `createdBy` = 1
+WHERE `id` IN (1, 2, 3, 4);
+
+-- Mark the 4th user as deleted by Admin
+UPDATE `users`
+SET `isDeleted` = 1,
+    `deletedBy` = 1
+WHERE `id` = 4;
 
 -- Mark deleted user
 UPDATE `users` SET `isDeleted` = 1, `deletedBy` = 1 WHERE `id` = 4;
@@ -132,6 +151,5 @@ SELECT
     r.name AS role,
     u.status
 FROM users u
-LEFT JOIN roles r ON u.roleId = r.id
-WHERE u.isDeleted = 0
-ORDER BY u.id;
+         LEFT JOIN roles r ON u.roleId = r.id
+WHERE u.isDeleted = 0;

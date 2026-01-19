@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class DBContext {
 
     private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String PASS = "12345";
     private static final String URL = "jdbc:mysql://localhost:3306/swp391_demo";
 
     public static Connection getConnection() {

@@ -55,14 +55,14 @@ public class LoginServlet extends HttpServlet {
         
         //check email co ton tai khong
         if(user == null){
-            request.setAttribute("Error", "Tài khoản không tồn tại");
+            request.setAttribute("error", "Tài khoản không tồn tại");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
         
         //check password voi BCrypt
         if(!PasswordUtil.checkPassword(password, user.getPassword())){
-            request.setAttribute("Error", "Mật khẩu không đúng");
+            request.setAttribute("error", "Mật khẩu không đúng");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }

@@ -97,23 +97,14 @@ VALUES (2, 5), -- PRODUCT_MANAGE
        (2, 1); -- USER_READ
 
 -- 4. Create Users (Password: 123456 - Bcrypt hashed)
-INSERT INTO `users` (`email`, `password`, `fullName`, `gender`, `phone`, `address`, `roleId`, `status`)
-VALUES 
-('admin@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'System Administrator', 'MALE', '0901234567', 'Hanoi, Vietnam', 1, 1),
-('manager@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Manager One', 'FEMALE', '0901234568', 'Da Nang, Vietnam', 2, 1),
-('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Sales Staff', 'MALE', '0901234569', 'Ho Chi Minh, Vietnam', 3, 1),
-('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Deleted Customer', 'OTHER', '0000000000', 'Unknown', 4, 0);
-
 -- Passwords are now Hashed Bcrypt ($2b$10$...) instead of plain text "123456"
 -- tôi bỏ dấu chấm ở cuối mật khẩu vì nó ảnh hướng đến việc đồng bộ mật khẩu và đáu chấm đó thừa
-INSERT INTO `users` (`email`, `password`, `fullName`, `gender`, `roleId`, `status`)
-VALUES ('admin@gmail.com', '$2a$10$lK39S1iEwTZcVFTniBcjTOeGKplyv8y8DVqS.DvN0Jps2K7thzwOi', 'System Administrator',
-        'MALE', 1, 1),
-       ('manager@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Manager One', 'FEMALE', 2,
-        1),
-       ('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Sales Staff', 'MALE', 3, 1),
-       ('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Deleted Customer',
-        'OTHER', 4, 0);
+INSERT INTO `users` (`email`, `password`, `fullName`, `gender`, `phone`, `address`, `roleId`, `status`)
+VALUES 
+('admin@gmail.com', '$2a$10$lK39S1iEwTZcVFTniBcjTOeGKplyv8y8DVqS.DvN0Jps2K7thzwOi', 'System Administrator', 'MALE', '0901234567', 'Hanoi, Vietnam', 1, 1),
+('manager@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Manager One', 'FEMALE', '0901234568', 'Da Nang, Vietnam', 2, 1),
+('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Sales Staff', 'MALE', '0901234569', 'Ho Chi Minh, Vietnam', 3, 1),
+('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Deleted Customer', 'OTHER', '0000000000', 'Unknown', 4, 0);
 
 -- Set Admin (ID 1) as the creator of everyone
 UPDATE `users`

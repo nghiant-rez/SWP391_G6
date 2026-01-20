@@ -59,6 +59,13 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
+
+        //check tài khoản da bi xoa chua.
+        if(user.isDeleted()){
+            request.setAttribute("error", "tài khoản đã bị xóa");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
         
         //check password voi BCrypt
         if(!PasswordUtil.checkPassword(password, user.getPassword())){

@@ -72,7 +72,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("user", user);
         session.setAttribute("id", user.getId());
         session.setAttribute("email", user.getEmail());
-        session.setAttribute("fullname", user.getFullname());
+        session.setAttribute("fullname", user.getFullName());
         
         //Redirict ve home
         response.sendRedirect("home.jsp");

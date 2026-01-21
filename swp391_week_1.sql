@@ -1,6 +1,9 @@
-DROP DATABASE IF EXISTS swp391_demo;
-CREATE DATABASE swp391_demo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE swp391_demo;
+DROP
+DATABASE IF EXISTS swp391_demo;
+CREATE
+DATABASE swp391_demo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE
+swp391_demo;
 
 -- 1. ROLES
 CREATE TABLE `roles`
@@ -72,7 +75,7 @@ VALUES ('ADMINISTRATOR', 'Full system access'),
 
 -- 2. Permissions (Complete Set)
 INSERT INTO `permissions` (`name`, `displayName`, `description`)
-VALUES 
+VALUES
 -- User Management
 ('USER_READ', 'View Users', 'Can see user list'),
 ('USER_CREATE', 'Create User', 'Can add new users'),
@@ -89,31 +92,26 @@ VALUES
 -- 3. Assign Permissions to Roles
 -- ADMINISTRATOR gets ALL permissions
 INSERT INTO `rolePermissions` (`roleId`, `permissionId`)
-SELECT 1, id FROM `permissions`;
+SELECT 1, id
+FROM `permissions`;
 
 -- MANAGER gets Product management and User Read
 INSERT INTO `rolePermissions` (`roleId`, `permissionId`)
 VALUES (2, 5), -- PRODUCT_MANAGE
-       (2, 1); -- USER_READ
+       (2, 1);
+-- USER_READ
 
 -- 4. Create Users (Password: 123456 - Bcrypt hashed)
 INSERT INTO `users` (`email`, `password`, `fullName`, `gender`, `phone`, `address`, `roleId`, `status`)
-VALUES 
-('admin@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'System Administrator', 'MALE', '0901234567', 'Hanoi, Vietnam', 1, 1),
-('manager@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Manager One', 'FEMALE', '0901234568', 'Da Nang, Vietnam', 2, 1),
-('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Sales Staff', 'MALE', '0901234569', 'Ho Chi Minh, Vietnam', 3, 1),
-('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2.', 'Deleted Customer', 'OTHER', '0000000000', 'Unknown', 4, 0);
-
--- Passwords are now Hashed Bcrypt ($2b$10$...) instead of plain text "123456"
--- tôi bỏ dấu chấm ở cuối mật khẩu vì nó ảnh hướng đến việc đồng bộ mật khẩu và đáu chấm đó thừa
-INSERT INTO `users` (`email`, `password`, `fullName`, `gender`, `roleId`, `status`)
 VALUES ('admin@gmail.com', '$2a$10$lK39S1iEwTZcVFTniBcjTOeGKplyv8y8DVqS.DvN0Jps2K7thzwOi', 'System Administrator',
-        'MALE', 1, 1),
-       ('manager@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Manager One', 'FEMALE', 2,
-        1),
-       ('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Sales Staff', 'MALE', 3, 1),
-       ('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Deleted Customer',
-        'OTHER', 4, 0);
+        'MALE', '0901234567', 'Hanoi, Vietnam', 1, 1),
+       ('manager@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Manager One', 'FEMALE',
+        '0901234568', 'Da Nang, Vietnam', 2, 1),
+       ('sales@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Sales Staff', 'MALE',
+        '0901234569', 'Ho Chi Minh, Vietnam', 3, 1),
+       ('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Deleted Customer', 'OTHER',
+        '0000000000', 'Unknown', 4, 0);
+
 
 -- Set Admin (ID 1) as the creator of everyone
 UPDATE `users`
@@ -127,29 +125,30 @@ SET `isDeleted` = 1,
 WHERE `id` = 4;
 
 -- Mark deleted user
-UPDATE `users` SET `isDeleted` = 1, `deletedBy` = 1 WHERE `id` = 4;
+UPDATE `users`
+SET `isDeleted` = 1,
+    `deletedBy` = 1
+WHERE `id` = 4;
 
 -- ========================================
 -- VERIFICATION QUERIES
 
 -- Check Admin Permissions
-SELECT 
-    r. name AS role,
-    p. name AS permission,
-    p. displayName
+SELECT r.name AS role,
+       p.name AS permission,
+       p.displayName
 FROM roles r
-JOIN rolePermissions rp ON r. id = rp.roleId
-JOIN permissions p ON rp.permissionId = p.id
+         JOIN rolePermissions rp ON r.id = rp.roleId
+         JOIN permissions p ON rp.permissionId = p.id
 WHERE r.name = 'ADMINISTRATOR'
 ORDER BY p.name;
 
 -- Check Active Users
-SELECT 
-    u.id,
-    u.email,
-    u.fullName,
-    r.name AS role,
-    u.status
+SELECT u.id,
+       u.email,
+       u.fullName,
+       r.name AS role,
+       u.status
 FROM users u
          LEFT JOIN roles r ON u.roleId = r.id
 WHERE u.isDeleted = 0;

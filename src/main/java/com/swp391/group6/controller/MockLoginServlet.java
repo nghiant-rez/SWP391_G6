@@ -1,6 +1,6 @@
 package com.swp391.group6.controller;
 
-import com.swp391.group6.dal.UserDAO;
+import com.swp391.group6.dao.UserDAO;
 import com.swp391.group6.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

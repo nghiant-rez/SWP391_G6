@@ -134,20 +134,24 @@
     </div>
 
     <script>
+        <c:set var="isEditMode" value="${isEdit}" />
+        var isEdit = <c:out value="${isEditMode}" default="false" />;
+        
         function validateForm() {
-            <c:if test="${!isEdit}">
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
+            if (!isEdit) {
+                // Validate password match for new users
+                var password = document.getElementById('password').value;
+                var confirmPassword = document.getElementById('confirmPassword').value;
                 
                 if (password !== confirmPassword) {
-                    alert('❌ Mật khẩu xác nhận không khớp!');
+                    alert('Mật khẩu xác nhận không khớp!');
                     return false;
                 }
-            </c:if>
+            }
 
-            const phone = document.getElementById('phone').value;
+            var phone = document.getElementById('phone').value;
             if (phone && !/^[0-9]{10,11}$/.test(phone)) {
-                alert('❌ Số điện thoại không hợp lệ! Phải là 10-11 chữ số.');
+                alert('Số điện thoại không hợp lệ! Phải là 10-11 chữ số.');
                 return false;
             }
 

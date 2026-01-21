@@ -266,7 +266,14 @@ public class UserDAO {
         user.setGender(rs.getString("gender"));
         user.setPhone(rs.getString("phone"));
         user.setAddress(rs.getString("address"));
-        user.setAvatarUrl(rs.getString("avatarUrl"));
+        
+        // avatarUrl might not exist in database
+        try {
+            user.setAvatarUrl(rs.getString("avatarUrl"));
+        } catch (SQLException e) {
+            user.setAvatarUrl(null);
+        }
+        
         user.setRoleId(rs.getObject("roleId") != null ? rs.getInt("roleId") : null);
         user.setStatus(rs.getBoolean("status"));
         user.setDeleted(rs.getBoolean("isDeleted"));

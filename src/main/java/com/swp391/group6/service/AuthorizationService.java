@@ -1,6 +1,6 @@
 package com.swp391.group6.service;
 
-import com.swp391.group6.dal.PermissionDAO;
+import com.swp391.group6.dao.PermissionDAO;
 import com.swp391.group6.model.Permission;
 
 import java.util.List;

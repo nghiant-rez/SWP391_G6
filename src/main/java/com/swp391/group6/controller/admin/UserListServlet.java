@@ -1,6 +1,10 @@
 package com.swp391.group6.controller.admin;
 
+<<<<<<< HEAD
 import com.swp391.group6.dal.UserDAO;
+=======
+import com.swp391.group6.dao.UserDAO;
+>>>>>>> 982e4acc394db7f772ed12d5357fecc65e2d4afe
 import com.swp391.group6.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

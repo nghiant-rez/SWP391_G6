@@ -14,7 +14,7 @@ public class UserDAO {
      * Get a user by ID (for mock login and general use)
      */
     public User getUserById(int userId) {
-        String sql = "SELECT * FROM users WHERE id = ?  AND isDeleted = 0";
+        String sql = "SELECT * FROM users WHERE id = ?";
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -40,7 +40,7 @@ public class UserDAO {
      */
     public List<User> getAllUsers(String searchKeyword, int page, int pageSize) {
         List<User> users = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM users WHERE isDeleted = 0");
+        StringBuilder sql = new StringBuilder("SELECT * FROM users WHERE 1=1");
         
         if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
             sql.append(" AND (fullName LIKE ? OR email LIKE ? OR phone LIKE ?)");
@@ -80,7 +80,7 @@ public class UserDAO {
      * Get total count of users
      */
     public int getTotalUsers(String searchKeyword) {
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM users WHERE isDeleted = 0");
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM users WHERE 1=1");
         
         if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
             sql.append(" AND (fullName LIKE ? OR email LIKE ? OR phone LIKE ?)");
@@ -262,7 +262,14 @@ public class UserDAO {
         user.setGender(rs.getString("gender"));
         user.setPhone(rs.getString("phone"));
         user.setAddress(rs.getString("address"));
-        user.setAvatarUrl(rs.getString("avatarUrl"));
+        
+        // avatarUrl might not exist in database
+        try {
+            user.setAvatarUrl(rs.getString("avatarUrl"));
+        } catch (SQLException e) {
+            user.setAvatarUrl(null);
+        }
+        
         user.setRoleId(rs.getObject("roleId") != null ? rs.getInt("roleId") : null);
         user.setStatus(rs.getBoolean("status"));
         user.setDeleted(rs.getBoolean("isDeleted"));

@@ -44,3 +44,6 @@ Desktop.ini
 # APPLICATION-SPECIFIC
 *.log
 .env
+
+# DATABASE CONFIG
+src/main/java/com/swp391/group6/util/DBContext.java

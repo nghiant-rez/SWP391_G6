@@ -4,8 +4,7 @@
  */
 package com.swp391.group6.controller;
 
-import com.swp391.group6.dao.UserDao;
-import com.swp391.group6.dao.UserDaoImpl;
+import com.swp391.group6.dao.UserDAO;
 import com.swp391.group6.model.User;
 import com.swp391.group6.util.PasswordUtil;
 import java.io.IOException;
@@ -23,11 +22,11 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
     
-    private UserDao userDao;
+    private UserDAO userDao;
     
     @Override
     public void init(){
-        userDao = new UserDaoImpl();
+        userDao = new UserDAO();
     }
     
     @Override

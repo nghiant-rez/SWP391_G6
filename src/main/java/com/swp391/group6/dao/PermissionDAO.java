@@ -1,4 +1,4 @@
-package com.swp391.group6.dal;
+package com.swp391.group6.dao;
 
 import com.swp391.group6.model.Permission;
 import com.swp391.group6.util.DBContext;

@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl extends UserDAO {
 
     @Override
     public User findByEmail(String email) {
@@ -14,20 +14,20 @@ public class UserDaoImpl implements UserDao{
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             conn = DBContext.getConnection();
-            
+
             if(conn == null){
                 System.out.println("Cannot connect to database!");
                 return null;
             }
-            
+
             String sql = "SELECT id, email, password, fullname, isDeleted FROM users WHERE email = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             rs = ps.executeQuery();
-            
+
             if(rs.next()){
                 user = new User();
                 user.setId(rs.getInt("id"));
@@ -47,8 +47,8 @@ public class UserDaoImpl implements UserDao{
                 e.printStackTrace();
             }
         }
-        
+
         return user;
     }
-    
+
 }

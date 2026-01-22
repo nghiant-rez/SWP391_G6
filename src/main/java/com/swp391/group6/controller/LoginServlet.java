@@ -1,6 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package com.swp391.group6.controller;
 
-import com.swp391.group6.dao.UserDao;
+import com.swp391.group6.dao.UserDAO;
 import com.swp391.group6.dao.UserDaoImpl;
 import com.swp391.group6.model.User;
 import com.swp391.group6.util.PasswordUtil;
@@ -15,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
     
-    private UserDao userDao;
+    private UserDAO userDao;
     
     @Override
     public void init(){
@@ -58,7 +62,7 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        
+
         //check password voi BCrypt
         if(!PasswordUtil.checkPassword(password, user.getPassword())){
             request.setAttribute("error", "Mật khẩu không đúng");

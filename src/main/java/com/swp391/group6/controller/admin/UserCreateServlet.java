@@ -1,5 +1,6 @@
 package com.swp391.group6.controller.admin;
 
+import com.swp391.group6.dao.UserDAO;
 import com.swp391.group6.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,51 +10,90 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
- * AuthorizationFilter already checked USER_CREATE permission
+ * Add new user - Member 3 (Phạm Xuân Ba)
  */
-@WebServlet(name = "UserCreateServlet",
-        urlPatterns = {"/admin/users/create", "/admin/users/add"})
+@WebServlet(name = "UserCreateServlet", urlPatterns = {"/admin/users/create", "/admin/users/add"})
 public class UserCreateServlet extends HttpServlet {
+
+    private final UserDAO userDAO = new UserDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        request.setAttribute("isEdit", false);
+        request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
+    }
 
-        HttpSession session = request.getSession(false);
-        // AuthorizationFilter ensures session and user are not null here
-        User currentUser = (User) session.getAttribute("user");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
-        out.println("<!DOCTYPE html><html><head><title>Create User</title>");
-        out.println("<style>");
-        out.println("body { font-family: Arial, sans-serif; max-width: 800px; " +
-                "margin: 50px auto; padding: 20px; }");
-        out.println(".success { background: #d4edda; border: 1px solid " +
-                "#c3e6cb; padding: 20px; border-radius: 5px; }");
-        out.println(".info { background: #e7f3ff; padding: 15px; " +
-                "border-radius: 5px; margin-top: 20px; }");
-        out.println("</style></head><body>");
+        try {
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String fullName = request.getParameter("fullName");
+            String gender = request.getParameter("gender");
+            String phone = request.getParameter("phone");
+            String address = request.getParameter("address");
+            String avatarUrl = request.getParameter("avatarUrl");
+            String roleIdStr = request.getParameter("roleId");
+            boolean status = "true".equals(request.getParameter("status"));
 
-        out.println("<div class='success'>");
-        out.println("<h1>✅ Create User Page</h1>");
-        out.println("<p>Authorization successful! You have " +
-                "<strong>USER_CREATE</strong> permission.</p>");
-        out.println("</div>");
+            if (email == null || email.trim().isEmpty() ||
+                password == null || password.trim().isEmpty() ||
+                fullName == null || fullName.trim().isEmpty() ||
+                roleIdStr == null || roleIdStr.trim().isEmpty()) {
+                
+                request.setAttribute("error", "Vui lòng điền đầy đủ các trường bắt buộc!");
+                request.setAttribute("isEdit", false);
+                request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
+                return;
+            }
 
-        out.println("<div class='info'>");
-        out.println("<p><strong>Logged in as:</strong> " +
-                currentUser.getFullName() + "</p>");
-        out.println("<p><em>This is a placeholder. Member 3 will implement " +
-                "the create user form here.</em></p>");
-        out.println("</div>");
+            if (userDAO.isEmailExists(email, null)) {
+                request.setAttribute("error", "Email đã tồn tại trong hệ thống!");
+                request.setAttribute("isEdit", false);
+                request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
+                return;
+            }
 
-        out.println("<hr><p><a href='" + request.getContextPath() +
-                "/mock-login'>Back to Mock Login</a></p>");
-        out.println("</body></html>");
+            User newUser = new User();
+            newUser.setEmail(email.trim());
+            newUser.setPassword(password);
+            newUser.setFullName(fullName.trim());
+            newUser.setGender(gender);
+            newUser.setPhone(phone != null ? phone.trim() : null);
+            newUser.setAddress(address != null ? address.trim() : null);
+            newUser.setAvatarUrl(avatarUrl != null ? avatarUrl.trim() : null);
+            newUser.setRoleId(Integer.parseInt(roleIdStr));
+            newUser.setStatus(status);
+
+            HttpSession session = request.getSession();
+            User currentUser = (User) session.getAttribute("user");
+            int createdBy = currentUser.getId();
+
+            boolean success = userDAO.createUser(newUser, createdBy);
+
+            if (success) {
+                response.sendRedirect(request.getContextPath() + 
+                    "/admin/users?message=" + java.net.URLEncoder.encode("Thêm người dùng thành công!", "UTF-8"));
+            } else {
+                request.setAttribute("error", "Có lỗi xảy ra khi thêm người dùng!");
+                request.setAttribute("isEdit", false);
+                request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Lỗi hệ thống: " + e.getMessage());
+            request.setAttribute("isEdit", false);
+            request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
+        }
     }
 }

@@ -73,6 +73,12 @@ public class AuthorizationFilter implements Filter {
             return;
         }
 
+        // Skip public pages (login, mock-login, home, etc.)
+        if (isPublicPage(path)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         // Check if this path requires a permission
         String requiredPermission = getRequiredPermission(path);
 
@@ -111,6 +117,18 @@ public class AuthorizationFilter implements Filter {
                 path.startsWith("/js/") ||
                 path.startsWith("/images/") ||
                 path.endsWith(".ico");
+    }
+
+    /**
+     * Check if the path is a public page (no authentication required)
+     */
+    private boolean isPublicPage(String path) {
+        return path.equals("/") ||
+                path.equals("/login") ||
+                path.equals("/mock-login") ||
+                path.equals("/home") ||
+                path.equals("/index.jsp") ||
+                path.startsWith("/demo");
     }
 
     /**

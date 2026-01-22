@@ -24,6 +24,6 @@
         <h2>Welcome</h2>
         <p>FullName: <%= fullName %></p>
         <p>Email: <%= email %></p>
-        <a href="logout">Logout</a>
+        <a href="logout" onclick="return confirm('bạn có muốn đang xuất không?')">Logout</a>
     </body>
 </html>

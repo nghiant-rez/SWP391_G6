@@ -76,6 +76,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("id", user.getId());
         session.setAttribute("email", user.getEmail());
         session.setAttribute("fullName", user.getFullName());
+        session.setAttribute("role", user.getRoleId());
         
         //Redirict ve home
         response.sendRedirect("home.jsp");

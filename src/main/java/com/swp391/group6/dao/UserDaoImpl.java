@@ -23,7 +23,10 @@ public class UserDaoImpl extends UserDAO {
                 return null;
             }
 
-            String sql = "SELECT id, email, password, fullname, isDeleted FROM users WHERE email = ?";
+            String sql = "SELECT u.id, u.email, u.password, u.fullname, u.isDeleted, r.name as roleName" +
+                    "FROM users u" +
+                    "LEFT JOIN roles r ON u.roleId = r.id " +
+                    "WHERE u.email = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             rs = ps.executeQuery();

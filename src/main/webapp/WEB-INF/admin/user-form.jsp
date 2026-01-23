@@ -111,9 +111,14 @@
                     <label for="roleId">👑 Role <span class="required">*</span></label>
                     <select id="roleId" name="roleId" required>
                         <option value="">-- Chọn role --</option>
-                        <option value="1" ${user.roleId == 1 ? 'selected' : ''}>Admin (Role 1)</option>
-                        <option value="2" ${user.roleId == 2 ? 'selected' : ''}>Manager (Role 2)</option>
-                        <option value="3" ${user.roleId == 3 || empty user ? 'selected' : ''}>User (Role 3)</option>
+                        <c:forEach var="role" items="${roles}">
+                            <c:if test="${!role.deleted}">
+                                <option value="${role.id}" 
+                                    ${user.roleId == role.id ? 'selected' : ''}>
+                                    <c:out value="${role.name}"/>
+                                </option>
+                            </c:if>
+                        </c:forEach>
                     </select>
                 </div>
 

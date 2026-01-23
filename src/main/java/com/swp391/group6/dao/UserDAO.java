@@ -51,10 +51,6 @@ public class UserDAO {
 
         sql.append(" ORDER BY u.`id` ASC LIMIT ? OFFSET ?");
 
-        System.out.println("=== getAllUsers Debug ===");
-        System.out.println("SQL: " + sql.toString());
-        System.out.println("Search: " + searchKeyword + ", Page: " + page + ", PageSize: " + pageSize);
-
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql.toString())) {
 
@@ -71,9 +67,7 @@ public class UserDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    User user = mapResultSetToUser(rs);
-                    users.add(user);
-                    System.out.println("Loaded user: " + user.getId() + " - " + user.getEmail());
+                    users.add(mapResultSetToUser(rs));
                 }
             }
 
@@ -82,7 +76,6 @@ public class UserDAO {
             e.printStackTrace();
         }
 
-        System.out.println("Total users found: " + users.size());
         return users;
     }
 

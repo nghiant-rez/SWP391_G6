@@ -79,32 +79,15 @@ public class UserUpdateServlet extends HttpServlet {
             String gender = request.getParameter("gender");
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
-            String avatarUrl = request.getParameter("avatarUrl");
             String roleIdStr = request.getParameter("roleId");
             boolean status = "true".equals(request.getParameter("status"));
-
-            // Debug logging
-            System.out.println("=== Update User Debug Info ===");
-            System.out.println("User ID: " + userId);
-            System.out.println("Full Name: " + fullName);
-            System.out.println("Gender: " + gender);
-            System.out.println("Phone: " + phone);
-            System.out.println("Address: " + address);
-            System.out.println("Avatar URL: " + avatarUrl);
-            System.out.println("Role ID: " + roleIdStr);
-            System.out.println("Status: " + status);
-            System.out.println("==============================");
 
             if (fullName == null || fullName.trim().isEmpty() ||
                 roleIdStr == null || roleIdStr.trim().isEmpty()) {
                 
-<<<<<<< HEAD
-                request.setAttribute("error", "Please fill in all required fields!");
-=======
                 List<Role> roles = roleDAO.getAllRoles(false);
                 request.setAttribute("roles", roles);
                 request.setAttribute("error", "Vui lòng điền đầy đủ các trường bắt buộc!");
->>>>>>> 066dc80e7c99e515b8ceb13ca354723cd9a3c615
                 request.setAttribute("user", existingUser);
                 request.setAttribute("isEdit", true);
                 request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
@@ -115,41 +98,28 @@ public class UserUpdateServlet extends HttpServlet {
             existingUser.setGender(gender);
             existingUser.setPhone(phone != null ? phone.trim() : null);
             existingUser.setAddress(address != null ? address.trim() : null);
-            existingUser.setAvatarUrl(avatarUrl != null ? avatarUrl.trim() : null);
             existingUser.setRoleId(Integer.parseInt(roleIdStr));
             existingUser.setStatus(status);
 
             boolean success = userDAO.updateUser(existingUser);
 
-            System.out.println("Update result: " + success);
-
             if (success) {
                 response.sendRedirect(request.getContextPath() + 
                     "/admin/users?message=" + java.net.URLEncoder.encode("User updated successfully!", "UTF-8"));
             } else {
-<<<<<<< HEAD
-                System.err.println("Failed to update user in database!");
-                request.setAttribute("error", "An error occurred while updating user!");
-=======
                 List<Role> roles = roleDAO.getAllRoles(false);
                 request.setAttribute("roles", roles);
                 request.setAttribute("error", "Có lỗi xảy ra khi cập nhật người dùng!");
->>>>>>> 066dc80e7c99e515b8ceb13ca354723cd9a3c615
                 request.setAttribute("user", existingUser);
                 request.setAttribute("isEdit", true);
                 request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
-            System.err.println("Exception in UserUpdateServlet: " + e.getMessage());
             e.printStackTrace();
-<<<<<<< HEAD
-            request.setAttribute("error", "System error: " + e.getMessage());
-=======
             List<Role> roles = roleDAO.getAllRoles(false);
             request.setAttribute("roles", roles);
             request.setAttribute("error", "Lỗi hệ thống: " + e.getMessage());
->>>>>>> 066dc80e7c99e515b8ceb13ca354723cd9a3c615
             request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
         }
     }

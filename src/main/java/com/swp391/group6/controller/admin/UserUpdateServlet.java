@@ -79,7 +79,6 @@ public class UserUpdateServlet extends HttpServlet {
             String gender = request.getParameter("gender");
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
-            String avatarUrl = request.getParameter("avatarUrl");
             String roleIdStr = request.getParameter("roleId");
             boolean status = "true".equals(request.getParameter("status"));
 
@@ -99,7 +98,6 @@ public class UserUpdateServlet extends HttpServlet {
             existingUser.setGender(gender);
             existingUser.setPhone(phone != null ? phone.trim() : null);
             existingUser.setAddress(address != null ? address.trim() : null);
-            existingUser.setAvatarUrl(avatarUrl != null ? avatarUrl.trim() : null);
             existingUser.setRoleId(Integer.parseInt(roleIdStr));
             existingUser.setStatus(status);
 
@@ -107,7 +105,7 @@ public class UserUpdateServlet extends HttpServlet {
 
             if (success) {
                 response.sendRedirect(request.getContextPath() + 
-                    "/admin/users?message=" + java.net.URLEncoder.encode("Cập nhật người dùng thành công!", "UTF-8"));
+                    "/admin/users?message=" + java.net.URLEncoder.encode("User updated successfully!", "UTF-8"));
             } else {
                 List<Role> roles = roleDAO.getAllRoles(false);
                 request.setAttribute("roles", roles);

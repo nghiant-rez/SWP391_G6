@@ -15,6 +15,7 @@ public class User implements Serializable {
     private String address;
     private String avatarUrl;
     private Integer roleId;
+    private String roleName;  // Role name from roles table
     private boolean status;
     private boolean isDeleted;
     private LocalDateTime createdAt;
@@ -104,6 +105,14 @@ public class User implements Serializable {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public boolean isStatus() {

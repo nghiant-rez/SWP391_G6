@@ -102,13 +102,6 @@
                 <div class="form-group">
                     <label for="roleId">Role <span class="required">*</span></label>
                     <select id="roleId" name="roleId" required>
-<<<<<<< HEAD
-                        <option value="">-- Select role --</option>
-                        <option value="1" ${user.roleId == 1 ? 'selected' : ''}>Administrator</option>
-                        <option value="2" ${user.roleId == 2 ? 'selected' : ''}>Manager</option>
-                        <option value="3" ${user.roleId == 3 ? 'selected' : ''}>Sales</option>
-                        <option value="4" ${user.roleId == 4 || empty user ? 'selected' : ''}>Customer</option>
-=======
                         <option value="">-- Chọn role --</option>
                         <c:forEach var="role" items="${roles}">
                             <c:if test="${!role.deleted}">
@@ -118,7 +111,6 @@
                                 </option>
                             </c:if>
                         </c:forEach>
->>>>>>> 066dc80e7c99e515b8ceb13ca354723cd9a3c615
                     </select>
                 </div>
 

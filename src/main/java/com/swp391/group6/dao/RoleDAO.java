@@ -198,6 +198,79 @@ public class RoleDAO {
     }
 
     /**
+     * Update role permissions (replace all)
+     * @param roleId the role to update
+     * @param permissionIds list of permission IDs to assign
+     * @return true if successful
+     */
+    public boolean updateRolePermissions(int roleId, 
+                                          List<Integer> permissionIds) {
+        Connection conn = null;
+        try {
+            conn = DBContext.getConnection();
+            conn.setAutoCommit(false);
+
+            // Delete all existing permissions for this role
+            String deleteSql = 
+                "DELETE FROM rolePermissions WHERE roleId = ?";
+            try (PreparedStatement ps = 
+                     conn.prepareStatement(deleteSql)) {
+                ps.setInt(1, roleId);
+                ps.executeUpdate();
+            }
+
+            // Insert new permissions
+            if (permissionIds != null && !permissionIds.isEmpty()) {
+                String insertSql = 
+                    "INSERT INTO rolePermissions " +
+                    "(roleId, permissionId) VALUES (?, ?)";
+                try (PreparedStatement ps = 
+                         conn.prepareStatement(insertSql)) {
+                    for (Integer permissionId : permissionIds) {
+                        ps.setInt(1, roleId);
+                        ps.setInt(2, permissionId);
+                        ps.addBatch();
+                    }
+                    ps.executeBatch();
+                }
+            }
+
+            conn.commit();
+            return true;
+
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    System.err.println(
+                        "RoleDAO.updateRolePermissions rollback " +
+                        "failed: " + ex.getMessage()
+                    );
+                }
+            }
+            System.err.println(
+                "RoleDAO.updateRolePermissions failed: " + 
+                e.getMessage()
+            );
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    System.err.println(
+                        "RoleDAO.updateRolePermissions close " +
+                        "failed: " + e.getMessage()
+                    );
+                }
+            }
+        }
+    }
+
+    /**
      * Map ResultSet to Role object
      */
     private Role mapResultSetToRole(ResultSet rs) 

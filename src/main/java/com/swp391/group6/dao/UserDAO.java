@@ -14,7 +14,7 @@ public class UserDAO {
      * Get a user by ID (for mock login and general use)
      */
     public User getUserById(int userId) {
-        String sql = "SELECT * FROM users WHERE id = ?  AND isDeleted = 0";
+        String sql = "SELECT * FROM `users` WHERE `id` = ? AND `isDeleted` = 0";
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -40,13 +40,20 @@ public class UserDAO {
      */
     public List<User> getAllUsers(String searchKeyword, int page, int pageSize) {
         List<User> users = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM users WHERE isDeleted = 0");
+        StringBuilder sql = new StringBuilder(
+            "SELECT u.*, r.name as roleName " +
+            "FROM `users` u LEFT JOIN `roles` r ON u.roleId = r.id " +
+            "WHERE u.`isDeleted` = 0");
 
         if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
-            sql.append(" AND (fullName LIKE ? OR email LIKE ? OR phone LIKE ?)");
+            sql.append(" AND (u.`fullName` LIKE ? OR u.`email` LIKE ? OR u.`phone` LIKE ?)");
         }
 
-        sql.append(" ORDER BY createdAt DESC LIMIT ? OFFSET ?");
+        sql.append(" ORDER BY u.`id` ASC LIMIT ? OFFSET ?");
+
+        System.out.println("=== getAllUsers Debug ===");
+        System.out.println("SQL: " + sql.toString());
+        System.out.println("Search: " + searchKeyword + ", Page: " + page + ", PageSize: " + pageSize);
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql.toString())) {
@@ -64,7 +71,9 @@ public class UserDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    users.add(mapResultSetToUser(rs));
+                    User user = mapResultSetToUser(rs);
+                    users.add(user);
+                    System.out.println("Loaded user: " + user.getId() + " - " + user.getEmail());
                 }
             }
 
@@ -73,6 +82,7 @@ public class UserDAO {
             e.printStackTrace();
         }
 
+        System.out.println("Total users found: " + users.size());
         return users;
     }
 
@@ -80,10 +90,10 @@ public class UserDAO {
      * Get total count of users
      */
     public int getTotalUsers(String searchKeyword) {
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM users WHERE isDeleted = 0");
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM `users` WHERE `isDeleted` = 0");
 
         if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
-            sql.append(" AND (fullName LIKE ? OR email LIKE ? OR phone LIKE ?)");
+            sql.append(" AND (`fullName` LIKE ? OR `email` LIKE ? OR `phone` LIKE ?)");
         }
 
         try (Connection conn = DBContext.getConnection();
@@ -114,8 +124,8 @@ public class UserDAO {
      * Create a new user
      */
     public boolean createUser(User user, int createdBy) {
-        String sql = "INSERT INTO users (email, password, fullName, gender, phone, address, " +
-                "avatarUrl, roleId, status, createdBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `users` (`email`, `password`, `fullName`, `gender`, `phone`, `address`, " +
+                "`roleId`, `status`, `createdBy`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -126,10 +136,9 @@ public class UserDAO {
             ps.setString(4, user.getGender());
             ps.setString(5, user.getPhone());
             ps.setString(6, user.getAddress());
-            ps.setString(7, user.getAvatarUrl());
-            ps.setObject(8, user.getRoleId());
-            ps.setBoolean(9, user.isStatus());
-            ps.setInt(10, createdBy);
+            ps.setObject(7, user.getRoleId());
+            ps.setBoolean(8, user.isStatus());
+            ps.setInt(9, createdBy);
 
             return ps.executeUpdate() > 0;
 
@@ -140,14 +149,14 @@ public class UserDAO {
 
         return false;
     }
-
+    
     /**
      * Update user information
      */
     public boolean updateUser(User user) {
-        String sql = "UPDATE users SET fullName = ?, gender = ?, phone = ?, " +
-                "address = ?, avatarUrl = ?, roleId = ?, status = ?, updatedAt = NOW() " +
-                "WHERE id = ? AND isDeleted = 0";
+        String sql = "UPDATE `users` SET `fullName` = ?, `gender` = ?, `phone` = ?, " +
+                "`address` = ?, `roleId` = ?, `status` = ?, `updatedAt` = NOW() " +
+                "WHERE `id` = ? AND `isDeleted` = 0";
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -156,10 +165,9 @@ public class UserDAO {
             ps.setString(2, user.getGender());
             ps.setString(3, user.getPhone());
             ps.setString(4, user.getAddress());
-            ps.setString(5, user.getAvatarUrl());
-            ps.setObject(6, user.getRoleId());
-            ps.setBoolean(7, user.isStatus());
-            ps.setInt(8, user.getId());
+            ps.setObject(5, user.getRoleId());
+            ps.setBoolean(6, user.isStatus());
+            ps.setInt(7, user.getId());
 
             return ps.executeUpdate() > 0;
 
@@ -175,7 +183,7 @@ public class UserDAO {
      * Update user status (active/deactive)
      */
     public boolean updateUserStatus(int userId, boolean status) {
-        String sql = "UPDATE users SET status = ?, updatedAt = NOW() WHERE id = ? AND isDeleted = 0";
+        String sql = "UPDATE `users` SET `status` = ?, `updatedAt` = NOW() WHERE `id` = ? AND `isDeleted` = 0";
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -197,10 +205,10 @@ public class UserDAO {
      * Check if email already exists
      */
     public boolean isEmailExists(String email, Integer excludeUserId) {
-        String sql = "SELECT COUNT(*) FROM users WHERE email = ? AND isDeleted = 0";
+        String sql = "SELECT COUNT(*) FROM `users` WHERE `email` = ? AND `isDeleted` = 0";
 
         if (excludeUserId != null) {
-            sql += " AND id != ?";
+            sql += " AND `id` != ?";
         }
 
         try (Connection conn = DBContext.getConnection();
@@ -233,7 +241,7 @@ public class UserDAO {
      * Get a user by email (for real login - Member 2 will use this)
      */
     public User getUserByEmail(String email) {
-        String sql = "SELECT * FROM users WHERE email = ? AND isDeleted = 0";
+        String sql = "SELECT * FROM `users` WHERE `email` = ? AND `isDeleted` = 0";
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -267,14 +275,23 @@ public class UserDAO {
         user.setPhone(rs.getString("phone"));
         user.setAddress(rs.getString("address"));
         
-        // avatarUrl might not exist in database
+        // Try to get avatarUrl - handle if column doesn't exist
         try {
             user.setAvatarUrl(rs.getString("avatarUrl"));
         } catch (SQLException e) {
+            // Column doesn't exist, set to null
             user.setAvatarUrl(null);
         }
         
         user.setRoleId(rs.getObject("roleId") != null ? rs.getInt("roleId") : null);
+        
+        // Get role name from joined table
+        try {
+            user.setRoleName(rs.getString("roleName"));
+        } catch (SQLException e) {
+            user.setRoleName(null);
+        }
+        
         user.setStatus(rs.getBoolean("status"));
         user.setDeleted(rs.getBoolean("isDeleted"));
 

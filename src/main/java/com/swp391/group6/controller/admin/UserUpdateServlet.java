@@ -77,10 +77,22 @@ public class UserUpdateServlet extends HttpServlet {
             String roleIdStr = request.getParameter("roleId");
             boolean status = "true".equals(request.getParameter("status"));
 
+            // Debug logging
+            System.out.println("=== Update User Debug Info ===");
+            System.out.println("User ID: " + userId);
+            System.out.println("Full Name: " + fullName);
+            System.out.println("Gender: " + gender);
+            System.out.println("Phone: " + phone);
+            System.out.println("Address: " + address);
+            System.out.println("Avatar URL: " + avatarUrl);
+            System.out.println("Role ID: " + roleIdStr);
+            System.out.println("Status: " + status);
+            System.out.println("==============================");
+
             if (fullName == null || fullName.trim().isEmpty() ||
                 roleIdStr == null || roleIdStr.trim().isEmpty()) {
                 
-                request.setAttribute("error", "Vui lòng điền đầy đủ các trường bắt buộc!");
+                request.setAttribute("error", "Please fill in all required fields!");
                 request.setAttribute("user", existingUser);
                 request.setAttribute("isEdit", true);
                 request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
@@ -97,19 +109,23 @@ public class UserUpdateServlet extends HttpServlet {
 
             boolean success = userDAO.updateUser(existingUser);
 
+            System.out.println("Update result: " + success);
+
             if (success) {
                 response.sendRedirect(request.getContextPath() + 
-                    "/admin/users?message=" + java.net.URLEncoder.encode("Cập nhật người dùng thành công!", "UTF-8"));
+                    "/admin/users?message=" + java.net.URLEncoder.encode("User updated successfully!", "UTF-8"));
             } else {
-                request.setAttribute("error", "Có lỗi xảy ra khi cập nhật người dùng!");
+                System.err.println("Failed to update user in database!");
+                request.setAttribute("error", "An error occurred while updating user!");
                 request.setAttribute("user", existingUser);
                 request.setAttribute("isEdit", true);
                 request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
+            System.err.println("Exception in UserUpdateServlet: " + e.getMessage());
             e.printStackTrace();
-            request.setAttribute("error", "Lỗi hệ thống: " + e.getMessage());
+            request.setAttribute("error", "System error: " + e.getMessage());
             request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
         }
     }

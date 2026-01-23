@@ -1,6 +1,8 @@
 package com.swp391.group6.controller.admin;
 
+import com.swp391.group6.dao.RoleDAO;
 import com.swp391.group6.dao.UserDAO;
+import com.swp391.group6.model.Role;
 import com.swp391.group6.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Update user information - Member 3 (Phạm Xuân Ba)
@@ -17,6 +20,7 @@ import java.io.IOException;
 public class UserUpdateServlet extends HttpServlet {
 
     private final UserDAO userDAO = new UserDAO();
+    private final RoleDAO roleDAO = new RoleDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -38,6 +42,8 @@ public class UserUpdateServlet extends HttpServlet {
                 return;
             }
             
+            List<Role> roles = roleDAO.getAllRoles(false);
+            request.setAttribute("roles", roles);
             request.setAttribute("user", user);
             request.setAttribute("isEdit", true);
             request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
@@ -92,7 +98,13 @@ public class UserUpdateServlet extends HttpServlet {
             if (fullName == null || fullName.trim().isEmpty() ||
                 roleIdStr == null || roleIdStr.trim().isEmpty()) {
                 
+<<<<<<< HEAD
                 request.setAttribute("error", "Please fill in all required fields!");
+=======
+                List<Role> roles = roleDAO.getAllRoles(false);
+                request.setAttribute("roles", roles);
+                request.setAttribute("error", "Vui lòng điền đầy đủ các trường bắt buộc!");
+>>>>>>> 066dc80e7c99e515b8ceb13ca354723cd9a3c615
                 request.setAttribute("user", existingUser);
                 request.setAttribute("isEdit", true);
                 request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
@@ -115,8 +127,14 @@ public class UserUpdateServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + 
                     "/admin/users?message=" + java.net.URLEncoder.encode("User updated successfully!", "UTF-8"));
             } else {
+<<<<<<< HEAD
                 System.err.println("Failed to update user in database!");
                 request.setAttribute("error", "An error occurred while updating user!");
+=======
+                List<Role> roles = roleDAO.getAllRoles(false);
+                request.setAttribute("roles", roles);
+                request.setAttribute("error", "Có lỗi xảy ra khi cập nhật người dùng!");
+>>>>>>> 066dc80e7c99e515b8ceb13ca354723cd9a3c615
                 request.setAttribute("user", existingUser);
                 request.setAttribute("isEdit", true);
                 request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
@@ -125,7 +143,13 @@ public class UserUpdateServlet extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Exception in UserUpdateServlet: " + e.getMessage());
             e.printStackTrace();
+<<<<<<< HEAD
             request.setAttribute("error", "System error: " + e.getMessage());
+=======
+            List<Role> roles = roleDAO.getAllRoles(false);
+            request.setAttribute("roles", roles);
+            request.setAttribute("error", "Lỗi hệ thống: " + e.getMessage());
+>>>>>>> 066dc80e7c99e515b8ceb13ca354723cd9a3c615
             request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
         }
     }

@@ -40,6 +40,7 @@ public class AuthorizationFilter implements Filter {
 
         //Admin Advanced (Role Management)
         PERMISSION_MAP.put("/admin/roles/permissions", "ROLE_UPDATE");
+        PERMISSION_MAP.put("/admin/roles/toggle", "ROLE_UPDATE");
         PERMISSION_MAP.put("/admin/roles/edit", "ROLE_UPDATE");
         PERMISSION_MAP.put("/admin/roles/view", "ROLE_READ");
         PERMISSION_MAP.put("/admin/roles", "ROLE_READ");

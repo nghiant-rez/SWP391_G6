@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" 
           content="width=device-width, initial-scale=1.0">
-    <title>Danh sach vai tro</title>
+    <title>Danh sách vai trò</title>
     <style>
         * { 
             margin: 0; 
@@ -42,6 +42,25 @@
             font-size: 28px; 
             font-weight: 600; 
         }
+        .header-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        .btn-logout { 
+            background: rgba(255,255,255,0.2); 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 6px; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            text-decoration: none; 
+            font-size: 14px; 
+            transition: all 0.3s; 
+        }
+        .btn-logout:hover { 
+            background: rgba(255,255,255,0.3); 
+            border-color: rgba(255,255,255,0.5); 
+        }
         .toolbar { 
             background: #f8f9fa; 
             padding: 20px 30px; 
@@ -74,6 +93,10 @@
         .btn-warning { 
             background: #ffc107; 
             color: #333; 
+        }
+        .btn-danger { 
+            background: #dc3545; 
+            color: white; 
         }
         .btn-success { 
             background: #28a745; 
@@ -145,12 +168,18 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Quan ly vai tro</h1>
-            <span>Xin chao, 
-                <strong>
-                    ${sessionScope.user.fullName}
-                </strong>
-            </span>
+            <h1>Quản lý vai trò</h1>
+            <div class="header-right">
+                <span>Xin chào, 
+                    <strong>
+                        ${sessionScope.user.fullName}
+                    </strong>
+                </span>
+                <a href="${pageContext.request.contextPath}/mock-login?logout=true" 
+                   class="btn-logout">
+                    Đăng xuất
+                </a>
+            </div>
         </div>
 
         <c:if test="${not empty param.message}">
@@ -166,11 +195,11 @@
 
         <div class="toolbar">
             <div>
-                <strong>${roles.size()}</strong> vai tro
+                <strong>${roles.size()}</strong> vai trò
             </div>
             <a href="${pageContext.request.contextPath}/mock-login" 
                class="btn btn-primary btn-sm">
-                Quay lai Mock Login
+                Quay lại Mock Login
             </a>
         </div>
 
@@ -180,7 +209,7 @@
                     <div style="text-align: center; 
                                 padding: 50px; 
                                 color: #6c757d;">
-                        <h3>Khong co vai tro nao</h3>
+                        <h3>Không có vai trò nào</h3>
                     </div>
                 </c:when>
                 <c:otherwise>
@@ -188,10 +217,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Ten vai tro</th>
-                                <th>Mo ta</th>
-                                <th>Trang thai</th>
-                                <th>Thao tac</th>
+                                <th>Tên vai trò</th>
+                                <th>Mô tả</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -214,13 +243,13 @@
                                                 test="${role.deleted}">
                                                 <span 
                                                     class="badge badge-danger">
-                                                    Da vo hieu hoa
+                                                    Đã vô hiệu hóa
                                                 </span>
                                             </c:when>
                                             <c:otherwise>
                                                 <span 
                                                     class="badge badge-success">
-                                                    Dang hoat dong
+                                                    Đang hoạt động
                                                 </span>
                                             </c:otherwise>
                                         </c:choose>
@@ -230,6 +259,11 @@
                                             <a href="${pageContext.request.contextPath}/admin/roles/view?id=${role.id}" 
                                                class="btn btn-primary btn-sm">
                                                 Xem
+                                            </a>
+                                            
+                                            <a href="${pageContext.request.contextPath}/admin/roles/edit?id=${role.id}" 
+                                               class="btn btn-warning btn-sm">
+                                                Sửa
                                             </a>
                                             
                                             <c:choose>
@@ -245,8 +279,8 @@
                                                         <button 
                                                             type="submit" 
                                                             class="btn btn-success btn-sm"
-                                                            onclick="return confirm('Kich hoat vai tro nay?');">
-                                                            Kich hoat
+                                                            onclick="return confirm('Kích hoạt vai trò này?');">
+                                                            Kích hoạt
                                                         </button>
                                                     </form>
                                                 </c:when>
@@ -260,9 +294,9 @@
                                                             value="${role.id}">
                                                         <button 
                                                             type="submit" 
-                                                            class="btn btn-warning btn-sm"
-                                                            onclick="return confirm('Vo hieu hoa vai tro nay?');">
-                                                            Vo hieu hoa
+                                                            class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Vô hiệu hóa vai trò này?');">
+                                                            Vô hiệu hóa
                                                         </button>
                                                     </form>
                                                 </c:otherwise>

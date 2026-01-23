@@ -5,6 +5,7 @@
 package com.swp391.group6.controller;
 
 import com.swp391.group6.dao.UserDAO;
+import com.swp391.group6.dao.UserDaoImpl;
 import com.swp391.group6.model.User;
 import com.swp391.group6.util.PasswordUtil;
 import java.io.IOException;
@@ -15,10 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-/**
- *
- * @author Admin
- */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
     
@@ -26,7 +23,7 @@ public class LoginServlet extends HttpServlet {
     
     @Override
     public void init(){
-        userDao = new UserDAO();
+        userDao = new UserDaoImpl();
     }
     
     @Override
@@ -58,7 +55,14 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        
+
+        //check tài khoản da bi xoa chua.
+        if(user.isDeleted()){
+            request.setAttribute("error", "tài khoản đã bị xóa");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+
         //check password voi BCrypt
         if(!PasswordUtil.checkPassword(password, user.getPassword())){
             request.setAttribute("error", "Mật khẩu không đúng");
@@ -71,7 +75,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("user", user);
         session.setAttribute("id", user.getId());
         session.setAttribute("email", user.getEmail());
-        session.setAttribute("fullname", user.getFullName());
+        session.setAttribute("fullName", user.getFullName());
         
         //Redirict ve home
         response.sendRedirect("home.jsp");

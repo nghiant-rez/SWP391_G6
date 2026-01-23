@@ -6,10 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
-    String fullname = (String) session.getAttribute("fullname");
+    String fullName= (String) session.getAttribute("fullName");
     String email = (String) session.getAttribute("email");
    
-    if(fullname == null){
+    if(fullName == null){
         response.sendRedirect("login");
         return;
     }
@@ -22,8 +22,8 @@
     </head>
     <body>
         <h2>Welcome</h2>
-        <p>Fullname: <%= fullname %></p>
+        <p>FullName: <%= fullName %></p>
         <p>Email: <%= email %></p>
-        <a href="logout">Logout</a>
+        <a href="logout" onclick="return confirm('bạn có muốn đang xuất không?')">Logout</a>
     </body>
 </html>

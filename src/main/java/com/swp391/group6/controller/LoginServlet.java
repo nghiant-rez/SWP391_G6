@@ -5,7 +5,6 @@
 package com.swp391.group6.controller;
 
 import com.swp391.group6.dao.UserDAO;
-import com.swp391.group6.dao.UserDaoImpl;
 import com.swp391.group6.model.User;
 import com.swp391.group6.util.PasswordUtil;
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class LoginServlet extends HttpServlet {
     
     @Override
     public void init(){
-        userDao = new UserDaoImpl();
+        userDao = new UserDAO();
     }
     
     @Override
@@ -52,13 +51,6 @@ public class LoginServlet extends HttpServlet {
         //check email co ton tai khong
         if(user == null){
             request.setAttribute("error", "Tài khoản không tồn tại");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-
-        //check tài khoản da bi xoa chua.
-        if(user.isDeleted()){
-            request.setAttribute("error", "tài khoản đã bị xóa");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }

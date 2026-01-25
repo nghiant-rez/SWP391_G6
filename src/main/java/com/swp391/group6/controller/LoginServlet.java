@@ -15,10 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-/**
- *
- * @author Admin
- */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
     
@@ -58,7 +54,7 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        
+
         //check password voi BCrypt
         if(!PasswordUtil.checkPassword(password, user.getPassword())){
             request.setAttribute("error", "Mật khẩu không đúng");
@@ -71,7 +67,8 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("user", user);
         session.setAttribute("id", user.getId());
         session.setAttribute("email", user.getEmail());
-        session.setAttribute("fullname", user.getFullName());
+        session.setAttribute("fullName", user.getFullName());
+        session.setAttribute("role", user.getRoleId());
         
         //Redirict ve home
         response.sendRedirect("home.jsp");

@@ -63,6 +63,19 @@ CREATE TABLE `rolePermissions`
     FOREIGN KEY (`permissionId`) REFERENCES `permissions` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- 5. Password-reset-requests (One-to-Many).
+CREATE TABLE `password_reset_requests` (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    userId INT NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    status VARCHAR(20) DEFAULT 'PENDING',
+    newPassword VARCHAR(255) DEFAULT NULL,
+    requestedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    processedAt TIMESTAMP NULL,
+    processedBy INT DEFAULT NULL,
+    FOREIGN KEY (userId) REFERENCES users(id)
+)ENGINE=InnoDB;
+
 -- ========================================
 -- SEED DATA
 

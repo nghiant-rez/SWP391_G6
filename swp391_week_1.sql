@@ -65,15 +65,16 @@ CREATE TABLE `rolePermissions`
 
 -- 5. Password-reset-requests (One-to-Many).
 CREATE TABLE `password_reset_requests` (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    userId INT NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    status VARCHAR(20) DEFAULT 'PENDING',
-    newPassword VARCHAR(255) DEFAULT NULL,
-    requestedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    processedAt TIMESTAMP NULL,
-    processedBy INT DEFAULT NULL,
-    FOREIGN KEY (userId) REFERENCES users(id)
+    `id` INT PRIMARY KEY AUTO_INCREMENT,
+    `userId` INT NOT NULL,
+    `email` VARCHAR(100) NOT NULL,
+    `status` ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING',
+    `newPassword` VARCHAR(255) DEFAULT NULL,
+    `requestDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `processedAt` TIMESTAMP NULL,
+    `processedBy` INT DEFAULT NULL,
+    FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`processedBy`) REFERENCES `users`(`id`) ON DELETE CASCADE
 )ENGINE=InnoDB;
 
 -- ========================================
@@ -100,13 +101,21 @@ VALUES
 
 -- Role Management (NEW - for your Admin Advanced features)
 ('ROLE_READ', 'View Roles', 'Can see role list and details'),
-('ROLE_UPDATE', 'Manage Roles', 'Can edit role permissions');
+('ROLE_UPDATE', 'Manage Roles', 'Can edit role permissions'),
+
+-- more new permissions for Admin
+('PASSWORD_RESET_MANAGE', 'Manage password reset', 'Can approve/ reject password reset request');
 
 -- 3. Assign Permissions to Roles
 -- ADMINISTRATOR gets ALL permissions
 INSERT INTO `rolePermissions` (`roleId`, `permissionId`)
 SELECT 1, id
 FROM `permissions`;
+
+-- ADMINISTRATOR gets PASSWORD_RESET_REQUESTS
+-- INSERT INTO `rolePermissions` (`roleId`, `permissionId`)
+-- SELECT 1, id FROM `permissions` 
+-- WHERE `name` = `PASSWORD_RESET_MANAGE`;
 
 -- MANAGER gets Product management and User Read
 INSERT INTO `rolePermissions` (`roleId`, `permissionId`)
@@ -125,7 +134,11 @@ VALUES ('admin@gmail.com', '$2a$10$lK39S1iEwTZcVFTniBcjTOeGKplyv8y8DVqS.DvN0Jps2
        ('deleted@gmail.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8E6v7FpC18JNpDutZCRa14O6gttY2', 'Deleted Customer', 'OTHER',
         '0000000000', 'Unknown', 4, 0);
 
-
+-- Test data: Add a few sample requests
+INSERT INTO `password_reset_requests` (`userId`, `email`, `status`)
+VALUES ((SELECT id FROM users WHERE email = 'manager@gmail.com'), 'manager@gmail.com', 'PENDING'),
+	   ((SELECT id FROM users WHERE email = 'sales@gmail.com'), 'sales@gmail.com','PENDING');
+       
 -- Set Admin (ID 1) as the creator of everyone
 UPDATE `users`
 SET `createdBy` = 1
@@ -165,3 +178,5 @@ SELECT u.id,
 FROM users u
          LEFT JOIN roles r ON u.roleId = r.id
 WHERE u.isDeleted = 0;
+
+SELECT * FROM `password_reset_requests`;

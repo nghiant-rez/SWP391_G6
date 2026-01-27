@@ -47,6 +47,24 @@ public class RoleToggleServlet extends HttpServlet {
         try {
             int roleId = Integer.parseInt(roleIdStr);
 
+            // Validate roleId is positive
+            if (roleId <= 0) {
+                response.sendRedirect(request.getContextPath() + 
+                    "/admin/roles?error=" + 
+                    URLEncoder.encode("ID vai tro khong hop le", 
+                        "UTF-8"));
+                return;
+            }
+
+            // Verify role exists before toggling
+            if (roleDAO.getRoleById(roleId) == null) {
+                response.sendRedirect(request.getContextPath() + 
+                    "/admin/roles?error=" + 
+                    URLEncoder.encode("Khong tim thay vai tro", 
+                        "UTF-8"));
+                return;
+            }
+
             // Prevent toggling own role (safety check)
             if (currentUser.getRoleId() != null && 
                 currentUser.getRoleId() == roleId) {

@@ -16,8 +16,7 @@
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, 
                          Verdana, sans-serif; 
-            background: linear-gradient(135deg, 
-                #667eea 0%, #764ba2 100%); 
+            background: #f5f5f5; 
             min-height: 100vh; 
             padding: 20px; 
         }
@@ -25,15 +24,14 @@
             max-width: 1200px; 
             margin: 0 auto; 
             background: white; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
             overflow: hidden; 
         }
         .header { 
-            background: linear-gradient(135deg, 
-                #667eea 0%, #764ba2 100%); 
+            background: #2c3e50; 
             color: white; 
-            padding: 30px; 
+            padding: 20px 30px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
@@ -48,17 +46,17 @@
             gap: 15px; 
         }
         .btn-logout { 
-            background: rgba(255,255,255,0.2); 
+            background: rgba(255,255,255,0.15); 
             color: white; 
             padding: 8px 16px; 
-            border-radius: 6px; 
+            border-radius: 4px; 
             border: 1px solid rgba(255,255,255,0.3); 
             text-decoration: none; 
             font-size: 14px; 
-            transition: all 0.3s; 
+            transition: all 0.2s; 
         }
         .btn-logout:hover { 
-            background: rgba(255,255,255,0.3); 
+            background: rgba(255,255,255,0.25); 
             border-color: rgba(255,255,255,0.5); 
         }
         .toolbar { 
@@ -70,37 +68,43 @@
             align-items: center; 
         }
         .btn { 
-            padding: 12px 24px; 
+            padding: 10px 20px; 
             border: none; 
-            border-radius: 8px; 
-            font-size: 15px; 
+            border-radius: 4px; 
+            font-size: 14px; 
             font-weight: 500; 
             cursor: pointer; 
-            transition: all 0.3s; 
+            transition: all 0.2s; 
             text-decoration: none; 
             display: inline-block; 
         }
         .btn-primary { 
-            background: linear-gradient(135deg, 
-                #667eea 0%, #764ba2 100%); 
+            background: #3498db; 
             color: white; 
         }
         .btn-primary:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 15px 
-                rgba(102, 126, 234, 0.4); 
+            background: #2980b9; 
         }
         .btn-warning { 
-            background: #ffc107; 
-            color: #333; 
+            background: #f39c12; 
+            color: white; 
+        }
+        .btn-warning:hover { 
+            background: #e67e22; 
         }
         .btn-danger { 
-            background: #dc3545; 
+            background: #e74c3c; 
             color: white; 
         }
+        .btn-danger:hover { 
+            background: #c0392b; 
+        }
         .btn-success { 
-            background: #28a745; 
+            background: #27ae60; 
             color: white; 
+        }
+        .btn-success:hover { 
+            background: #229954; 
         }
         .btn-sm { 
             padding: 8px 16px; 
@@ -197,10 +201,16 @@
             <div>
                 <strong>${roles.size()}</strong> vai trò
             </div>
-            <a href="${pageContext.request.contextPath}/mock-login" 
-               class="btn btn-primary btn-sm">
-                Quay lại Mock Login
-            </a>
+            <div style="display: flex; gap: 10px;">
+                <a href="${pageContext.request.contextPath}/admin/roles/matrix" 
+                   class="btn btn-success btn-sm">
+                    Ma trận phân quyền
+                </a>
+                <a href="${pageContext.request.contextPath}/mock-login" 
+                   class="btn btn-secondary btn-sm">
+                    Quay lại Mock Login
+                </a>
+            </div>
         </div>
 
         <div class="table-container">

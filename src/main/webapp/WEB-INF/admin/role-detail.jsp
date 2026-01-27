@@ -16,8 +16,7 @@
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, 
                          Verdana, sans-serif; 
-            background: linear-gradient(135deg, 
-                #667eea 0%, #764ba2 100%); 
+            background: #f5f5f5; 
             min-height: 100vh; 
             padding: 20px; 
         }
@@ -25,20 +24,40 @@
             max-width: 900px; 
             margin: 0 auto; 
             background: white; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
             overflow: hidden; 
         }
         .header { 
-            background: linear-gradient(135deg, 
-                #667eea 0%, #764ba2 100%); 
+            background: #2c3e50; 
             color: white; 
-            padding: 30px; 
-            text-align: center; 
+            padding: 20px 30px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
         .header h1 { 
             font-size: 28px; 
             font-weight: 600; 
+        }
+        .header-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        .btn-logout { 
+            background: rgba(255,255,255,0.15); 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            text-decoration: none; 
+            font-size: 14px; 
+            transition: all 0.2s; 
+        }
+        .btn-logout:hover { 
+            background: rgba(255,255,255,0.25); 
+            border-color: rgba(255,255,255,0.5); 
         }
         .content { 
             padding: 40px; 
@@ -48,7 +67,7 @@
             padding: 20px; 
             border-radius: 8px; 
             margin-bottom: 30px; 
-            border-left: 4px solid #667eea; 
+            border-left: 4px solid #3498db; 
         }
         .info-row { 
             display: flex; 
@@ -97,10 +116,10 @@
             border-radius: 8px; 
             padding: 15px; 
             background: #f8f9fa; 
-            transition: all 0.3s; 
+            transition: all 0.2s; 
         }
         .permission-item:hover { 
-            border-color: #667eea; 
+            border-color: #3498db; 
             background: #fff; 
         }
         .permission-item label { 
@@ -128,29 +147,30 @@
             display: block; 
         }
         .btn { 
-            padding: 12px 30px; 
+            padding: 10px 20px; 
             border: none; 
-            border-radius: 8px; 
-            font-size: 15px; 
+            border-radius: 4px; 
+            font-size: 14px; 
             font-weight: 500; 
             cursor: pointer; 
-            transition: all 0.3s; 
+            transition: all 0.2s; 
             text-decoration: none; 
             display: inline-block; 
             margin-right: 10px; 
         }
         .btn-primary { 
-            background: linear-gradient(135deg, 
-                #667eea 0%, #764ba2 100%); 
+            background: #3498db; 
             color: white; 
+        }
+        .btn-primary:hover { 
+            background: #2980b9; 
         }
         .btn-secondary { 
-            background: #6c757d; 
+            background: #95a5a6; 
             color: white; 
         }
-        .btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+        .btn-secondary:hover { 
+            background: #7f8c8d; 
         }
         .form-actions { 
             display: flex; 
@@ -180,6 +200,17 @@
     <div class="container">
         <div class="header">
             <h1>Chi tiết vai trò</h1>
+            <div class="header-right">
+                <span>Xin chào, 
+                    <strong>
+                        ${sessionScope.user.fullName}
+                    </strong>
+                </span>
+                <a href="${pageContext.request.contextPath}/mock-login?logout=true" 
+                   class="btn-logout">
+                    Đăng xuất
+                </a>
+            </div>
         </div>
 
         <div class="content">

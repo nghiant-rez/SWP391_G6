@@ -1,12 +1,17 @@
 package com.swp391.group6.controller;
+
 import com.swp391.group6.util.DBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet(name = "DemoServlet", urlPatterns = {"/demo"})
 public class DemoServlet extends HttpServlet {

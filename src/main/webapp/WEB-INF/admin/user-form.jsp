@@ -71,7 +71,8 @@
 
                 <div class="form-group">
                     <label for="fullName">Full Name <span class="required">*</span></label>
-                    <input type="text" id="fullName" name="fullName" value="${user.fullName}" required>
+                    <input type="text" id="fullName" name="fullName" value="${user.fullName}" required pattern="^[a-zA-Z\s]+$">
+                    <small style="color: #6c757d;">Only letters and spaces allowed (2-100 characters)</small>
                 </div>
 
                 <div class="form-group">
@@ -139,6 +140,13 @@
             var fullName = document.getElementById('fullName').value.trim();
             if (fullName.length < 2 || fullName.length > 100) {
                 alert('Full name must be between 2 and 100 characters!');
+                return false;
+            }
+            
+            // Check only letters and spaces
+            var namePattern = /^[a-zA-Z\s]+$/;
+            if (!namePattern.test(fullName)) {
+                alert('Full name can only contain letters and spaces!');
                 return false;
             }
 
@@ -234,10 +242,17 @@
             // Full name validation
             var fullNameInput = document.getElementById('fullName');
             if (fullNameInput) {
+                // Remove non-letter characters on input
+                fullNameInput.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+                });
+                
                 fullNameInput.addEventListener('blur', function() {
                     var value = this.value.trim();
                     if (value && (value.length < 2 || value.length > 100)) {
                         this.setCustomValidity('Full name must be between 2 and 100 characters');
+                    } else if (value && !/^[a-zA-Z\s]+$/.test(value)) {
+                        this.setCustomValidity('Full name can only contain letters and spaces');
                     } else {
                         this.setCustomValidity('');
                     }

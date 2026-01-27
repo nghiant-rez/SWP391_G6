@@ -16,8 +16,7 @@
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, 
                          Verdana, sans-serif; 
-            background: linear-gradient(135deg, 
-                #667eea 0%, #764ba2 100%); 
+            background: #f5f5f5; 
             min-height: 100vh; 
             padding: 20px; 
         }
@@ -25,15 +24,14 @@
             max-width: 800px; 
             margin: 0 auto; 
             background: white; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
             overflow: hidden; 
         }
         .header { 
-            background: linear-gradient(135deg, 
-                #667eea 0%, #764ba2 100%); 
+            background: #2c3e50; 
             color: white; 
-            padding: 30px; 
+            padding: 20px 30px; 
             text-align: center; 
         }
         .header h1 { 
@@ -67,36 +65,37 @@
         }
         input:focus, textarea:focus { 
             outline: none; 
-            border-color: #667eea; 
+            border-color: #3498db; 
         }
         textarea { 
             resize: vertical; 
             min-height: 100px; 
         }
         .btn { 
-            padding: 12px 30px; 
+            padding: 10px 20px; 
             border: none; 
-            border-radius: 8px; 
-            font-size: 15px; 
+            border-radius: 4px; 
+            font-size: 14px; 
             font-weight: 500; 
             cursor: pointer; 
-            transition: all 0.3s; 
+            transition: all 0.2s; 
             text-decoration: none; 
             display: inline-block; 
             margin-right: 10px; 
         }
         .btn-primary { 
-            background: linear-gradient(135deg, 
-                #667eea 0%, #764ba2 100%); 
+            background: #3498db; 
             color: white; 
+        }
+        .btn-primary:hover { 
+            background: #2980b9; 
         }
         .btn-secondary { 
-            background: #6c757d; 
+            background: #95a5a6; 
             color: white; 
         }
-        .btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+        .btn-secondary:hover { 
+            background: #7f8c8d; 
         }
         .form-actions { 
             display: flex; 
@@ -121,7 +120,7 @@
             padding: 15px; 
             border-radius: 8px; 
             margin-bottom: 20px; 
-            border-left: 4px solid #667eea; 
+            border-left: 4px solid #3498db; 
         }
         .info-box p { 
             margin: 5px 0; 

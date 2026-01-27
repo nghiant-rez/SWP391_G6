@@ -71,8 +71,9 @@ CREATE TABLE `password_reset_requests` (
     `status` ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING',
     `newPassword` VARCHAR(255) DEFAULT NULL,
     `requestDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `processedAt` TIMESTAMP NULL,
+    `processedDate` TIMESTAMP NULL,
     `processedBy` INT DEFAULT NULL,
+    `reason` VARCHAR(255) NULL,
     FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`processedBy`) REFERENCES `users`(`id`) ON DELETE CASCADE
 )ENGINE=InnoDB;

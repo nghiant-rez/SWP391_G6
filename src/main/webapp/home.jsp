@@ -5,25 +5,29 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
-    String fullName= (String) session.getAttribute("fullName");
+<%
+    String fullName = (String) session.getAttribute("fullName");
     String email = (String) session.getAttribute("email");
-   
-    if(fullName == null){
+
+    if (fullName == null) {
         response.sendRedirect("login");
         return;
     }
 %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Home</title>
-    </head>
-    <body>
-        <h2>Welcome</h2>
-        <p>FullName: <%= fullName %></p>
-        <p>Email: <%= email %></p>
-        <a href="logout" onclick="return confirm('bạn có muốn đang xuất không?')">Logout</a>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+<jsp:include page="/WEB-INF/includes/navbar.jsp" />
+
+<h2>Welcome</h2>
+<p>FullName: <%= fullName %></p>
+<p>Email: <%= email %></p>
+<p>You can view profile <a href="profile">here</a></p>
+</body>
 </html>
+

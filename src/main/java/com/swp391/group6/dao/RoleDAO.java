@@ -212,7 +212,7 @@ public class RoleDAO {
 
             // Delete all existing permissions for this role
             String deleteSql = 
-                "DELETE FROM rolePermissions WHERE roleId = ?";
+                "DELETE FROM role_permissions WHERE roleId = ?";
             try (PreparedStatement ps = 
                      conn.prepareStatement(deleteSql)) {
                 ps.setInt(1, roleId);
@@ -222,7 +222,7 @@ public class RoleDAO {
             // Insert new permissions
             if (permissionIds != null && !permissionIds.isEmpty()) {
                 String insertSql = 
-                    "INSERT INTO rolePermissions " +
+                    "INSERT INTO role_permissions " +
                     "(roleId, permissionId) VALUES (?, ?)";
                 try (PreparedStatement ps = 
                          conn.prepareStatement(insertSql)) {

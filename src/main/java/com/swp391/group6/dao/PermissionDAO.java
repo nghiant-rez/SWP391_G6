@@ -17,7 +17,7 @@ public class PermissionDAO {
         String sql = """
                 SELECT COUNT(*) as count
                 FROM permissions p
-                JOIN rolePermissions rp ON p.id = rp.permissionId
+                JOIN role_permissions rp ON p.id = rp.permissionId
                 JOIN users u ON u.roleId = rp.roleId
                 WHERE u.id = ? 
                   AND p.name = ?
@@ -58,7 +58,7 @@ public class PermissionDAO {
                        p.description, p.isDeleted, p.createdAt, 
                        p.updatedAt, p.createdBy, p.deletedBy
                 FROM permissions p
-                JOIN rolePermissions rp ON p.id = rp.permissionId
+                JOIN role_permissions rp ON p.id = rp.permissionId
                 JOIN users u ON u.roleId = rp.roleId
                 WHERE u.id = ?
                   AND p.isDeleted = 0
@@ -124,7 +124,7 @@ public class PermissionDAO {
                        p.isDeleted, p.createdAt, p.updatedAt, 
                        p.createdBy, p.deletedBy
                 FROM permissions p
-                JOIN rolePermissions rp ON p.id = rp.permissionId
+                JOIN role_permissions rp ON p.id = rp.permissionId
                 WHERE rp.roleId = ? 
                   AND p.isDeleted = 0
                 ORDER BY p.name

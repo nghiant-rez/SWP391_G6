@@ -21,7 +21,7 @@ out/
 build/
 
 
-# ECLIPSE / VS CODE (Just in case)
+# ECLIPSE / VS CODE / CURSOR (Just in case)
 .apt_generated
 .classpath
 .factorypath
@@ -30,6 +30,7 @@ build/
 .springBeans
 .sts4-cache
 .vscode/
+.cursor/
 
 
 # OPERATING SYSTEM FILES

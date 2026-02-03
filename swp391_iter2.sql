@@ -66,13 +66,14 @@ CREATE TABLE `password_reset_requests` (
     `id` INT PRIMARY KEY AUTO_INCREMENT,
     `userId` INT NOT NULL,
     `email` VARCHAR(100) NOT NULL,
-    `status` VARCHAR(20) DEFAULT 'PENDING',
+    `status` ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING',
     `newPassword` VARCHAR(255) DEFAULT NULL,
-    `requestedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `processedAt` TIMESTAMP NULL,
+    `requestDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `processedDate` TIMESTAMP NULL,
     `processedBy` INT DEFAULT NULL,
-    FOREIGN KEY (`userId`) REFERENCES `users`(`id`),
-    FOREIGN KEY (`processedBy`) REFERENCES `users`(`id`)
+    `reason` VARCHAR(255) NULL,
+    FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`processedBy`) REFERENCES `users`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 
@@ -289,14 +290,18 @@ INSERT INTO `permissions` (`name`, `displayName`, `description`) VALUES
 
 -- Feedback (Iteration 3)
 ('FEEDBACK_CREATE', 'Create Feedback', 'Submit product reviews'),
-('FEEDBACK_READ', 'View Feedbacks', 'View product reviews');
+('FEEDBACK_READ', 'View Feedbacks', 'View product reviews'),
+
+-- Password Reset Management (Iteration 1)
+('PASSWORD_RESET_MANAGE', 'Manage Password Resets', 'Approve or reject password reset requests');
 
 -- 6.3 Role-Permission Mapping
 -- ADMINISTRATOR gets User & Role management (system only)
 INSERT INTO `role_permissions` (`roleId`, `permissionId`)
 SELECT 1, id FROM `permissions` 
 WHERE `name` IN ('USER_READ', 'USER_CREATE', 'USER_UPDATE', 'USER_DELETE',
-                 'ROLE_READ', 'ROLE_UPDATE');
+                 'ROLE_READ', 'ROLE_UPDATE',
+                 'PASSWORD_RESET_MANAGE');
 
 -- MANAGER gets business operations
 INSERT INTO `role_permissions` (`roleId`, `permissionId`)
@@ -408,7 +413,6 @@ VALUES
 -- PART 7: INDEXES FOR PERFORMANCE
 
 -- Users
-CREATE INDEX `idx_users_email` ON `users`(`email`);
 CREATE INDEX `idx_users_roleId` ON `users`(`roleId`);
 CREATE INDEX `idx_users_status` ON `users`(`status`);
 
@@ -419,7 +423,6 @@ CREATE INDEX `idx_products_status` ON `products`(`status`);
 -- Devices
 CREATE INDEX `idx_devices_productId` ON `devices`(`productId`);
 CREATE INDEX `idx_devices_status` ON `devices`(`status`);
-CREATE INDEX `idx_devices_serialNumber` ON `devices`(`serialNumber`);
 
 -- Contracts
 CREATE INDEX `idx_contracts_customerId` ON `contracts`(`customerId`);

@@ -1,22 +1,25 @@
 package com.swp391.group6.util;
 
-import java.util.Properties;
-import jakarta.mail.internet.*;
 import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
+import java.util.Properties;
 
 /**
-*Email Utility - Gửi email qua Mailtrap (fake SMTP server)
-*Cách setup Mailtrap:
-*1. Đăng ký tài khoản miễn phí tại: https://mailtrap.io/
-*2. Vào Email Testing → Inboxes → My Inbox → Show Credentials
-*3. Copy Username và Password vào đây
-**/
+ * Email Utility - Gửi email qua Mailtrap (fake SMTP server)
+ * Cách setup Mailtrap:
+ * 1. Đăng ký tài khoản miễn phí tại: https://mailtrap.io/
+ * 2. Vào Email Testing → Inboxes → My Inbox → Show Credentials
+ * 3. Copy Username và Password vào đây
+ **/
 public class EmailUtil {
     //chuyen sang chay JDK21.
     private static final String SMTP_HOST = "sandbox.smtp.mailtrap.io";
     private static final String SMTP_PORT = "587";
-    private static final String SMTP_USERNAME = "214f27c6290ca9";//chỉnh lại username trong sanbox của mailtrail
-    private static final String SMTP_PASSWORD = "d7ce509ff3c094";////chỉnh lại username trong sanbox của mailtrail
+    private static final String SMTP_USERNAME = "27c4c7ba24cb66";//chỉnh lại username trong sanbox của mailtrail
+    private static final String SMTP_PASSWORD = "4ab6edc3141248";
+    /// /chỉnh lại username trong sanbox của mailtrail
     private static final String FROM_EMAIL = "admin@gmail.com";
 
     //send email with new password
@@ -80,7 +83,7 @@ public class EmailUtil {
     }
 
     //Test method - run to check email
-    public static void main(String[] args) {
+    static void main(String[] args) {
         System.out.println("Testing email...");
         boolean result = sendPasswordResetEmail(
                 "test@example.com",

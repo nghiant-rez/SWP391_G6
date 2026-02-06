@@ -25,10 +25,56 @@
         <p>FullName: <%= user.getFullName() %></p>
         <p>Email: <%= user.getEmail() %></p>
 
-        <%-- Nếu là Admin → Hiển thị link quản lý password reset --%>
+        <%-- Admin: Password Reset Management --%>
         <% if (user.getRoleId() != null && user.getRoleId() == 1) { %>
-        <p><a href="admin/password-reset" style="background: #667eea; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">🔐 Quản Lý Yêu Cầu Đặt Lại Mật Khẩu</a></p>
+        <p>
+            <a href="admin/users" 
+               style="background: #3498db; color: white; padding: 10px 20px; 
+                      text-decoration: none; border-radius: 5px; 
+                      margin-right: 10px;">
+                User Management
+            </a>
+            <a href="admin/roles" 
+               style="background: #9b59b6; color: white; padding: 10px 20px; 
+                      text-decoration: none; border-radius: 5px; 
+                      margin-right: 10px;">
+                Role Management
+            </a>
+            <a href="admin/password-reset" 
+               style="background: #667eea; color: white; padding: 10px 20px; 
+                      text-decoration: none; border-radius: 5px;">
+                Password Reset Requests
+            </a>
+        </p>
         <% } %>
-        <a href="logout" onclick="return confirm('bạn có muốn đang xuất không?')">Logout</a>
+        
+        <%-- Manager: Task Management --%>
+        <% if (user.getRoleId() != null && user.getRoleId() == 2) { %>
+        <p>
+            <a href="management/tasks" 
+               style="background: #27ae60; color: white; padding: 10px 20px; 
+                      text-decoration: none; border-radius: 5px; 
+                      margin-right: 10px;">
+                Task Management
+            </a>
+        </p>
+        <% } %>
+        
+        <%-- Staff: Task Management (view/update only) --%>
+        <% if (user.getRoleId() != null && user.getRoleId() == 3) { %>
+        <p>
+            <a href="management/tasks" 
+               style="background: #27ae60; color: white; padding: 10px 20px; 
+                      text-decoration: none; border-radius: 5px;">
+                My Tasks
+            </a>
+        </p>
+        <% } %>
+        
+        <br/>
+        <a href="logout" 
+           onclick="return confirm('Ban co muon dang xuat khong?')">
+            Logout
+        </a>
     </body>
 </html>

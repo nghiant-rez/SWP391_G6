@@ -44,6 +44,16 @@ public class AuthorizationFilter implements Filter {
         PERMISSION_MAP.put("/admin/roles/edit", "ROLE_UPDATE");
         PERMISSION_MAP.put("/admin/roles/view", "ROLE_READ");
         PERMISSION_MAP.put("/admin/roles", "ROLE_READ");
+
+        //Admin Password Reset Management
+        PERMISSION_MAP.put("/admin/password-reset", "PASSWORD_RESET_MANAGE");
+
+        // Task Management (most specific first) - /management path
+        PERMISSION_MAP.put("/management/tasks/delete", "TASK_DELETE");
+        PERMISSION_MAP.put("/management/tasks/edit", "TASK_UPDATE");
+        PERMISSION_MAP.put("/management/tasks/create", "TASK_CREATE");
+        PERMISSION_MAP.put("/management/tasks/view", "TASK_READ");
+        PERMISSION_MAP.put("/management/tasks", "TASK_READ");
     }
 
     private AuthorizationService authService;

@@ -282,6 +282,7 @@ INSERT INTO `permissions` (`name`, `displayName`, `description`) VALUES
 ('TASK_READ', 'View Tasks', 'View task list'),
 ('TASK_CREATE', 'Create Task', 'Assign tasks to staff'),
 ('TASK_UPDATE', 'Update Task', 'Update task status'),
+('TASK_DELETE', 'Delete Task', 'Soft-delete tasks'),
 
 -- Service Request (Iteration 3)
 ('SERVICE_REQUEST_CREATE', 'Create Service Request', 'Submit service requests'),
@@ -311,7 +312,7 @@ WHERE `name` IN (
     'CATEGORY_READ', 'CATEGORY_CREATE', 'CATEGORY_UPDATE', 'CATEGORY_DELETE',
     'DEVICE_READ', 'DEVICE_CREATE', 'DEVICE_UPDATE',
     'CONTRACT_READ', 'CONTRACT_CREATE', 'CONTRACT_APPROVE', 'CONTRACT_UPDATE',
-    'TASK_READ', 'TASK_CREATE', 'TASK_UPDATE',
+    'TASK_READ', 'TASK_CREATE', 'TASK_UPDATE', 'TASK_DELETE',
     'SERVICE_REQUEST_READ', 'SERVICE_REQUEST_PROCESS',
     'FEEDBACK_READ'
 );
@@ -408,6 +409,42 @@ VALUES
  'Warehouse A - Hanoi', 2),
 (5, 'D6-2022-001', '2022-11-05', 'AVAILABLE', 'FAIR', 
  'Warehouse C - Can Tho', 2);
+
+-- 6.8 Sample Tasks (for testing)
+-- Manager (id=2) assigns to Staff (id=3)
+INSERT INTO `tasks` 
+    (`title`, `description`, `assignerId`, `assigneeId`, 
+     `taskType`, `status`, `priority`, `dueDate`) 
+VALUES
+('Theo doi khach hang ABC', 
+ 'Lien he khach hang ABC de cap nhat tinh hinh hop dong', 
+ 2, 3, 'FOLLOW_UP', 'TODO', 'HIGH', 
+ DATE_ADD(NOW(), INTERVAL 3 DAY)),
+
+('Kham sat cong trinh Da Nang', 
+ 'Kham sat mat bang truoc khi giao may xuc CAT320', 
+ 2, 3, 'SITE_VISIT', 'IN_PROGRESS', 'URGENT', 
+ DATE_ADD(NOW(), INTERVAL 1 DAY)),
+
+('Giao may xuc cho khach XYZ', 
+ 'Giao may CAT305-2024-001 tai HCMC', 
+ 2, 3, 'DELIVERY', 'TODO', 'MEDIUM', 
+ DATE_ADD(NOW(), INTERVAL 7 DAY)),
+
+('Bao tri may cau LTM1050', 
+ 'Kiem tra va bao duong dinh ky may cau tai Da Nang', 
+ 2, 3, 'MAINTENANCE', 'DONE', 'MEDIUM', 
+ DATE_SUB(NOW(), INTERVAL 2 DAY)),
+
+('Lap dat may nen D6', 
+ 'Lap dat may nen D6-2022-001 tai cong truong Can Tho', 
+ 2, 3, 'INSTALLATION', 'CANCELLED', 'LOW', NULL);
+
+-- Update completed task with notes
+UPDATE `tasks` SET 
+    `completedAt` = DATE_SUB(NOW(), INTERVAL 1 DAY),
+    `completionNotes` = 'Da hoan thanh bao tri. May hoat dong tot.'
+WHERE `title` = 'Bao tri may cau LTM1050';
 
 
 -- PART 7: INDEXES FOR PERFORMANCE

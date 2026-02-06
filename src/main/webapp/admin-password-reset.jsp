@@ -89,19 +89,19 @@
 <%--Thông Báo --%>
 <% if (successMsg != null) { %>
 <% if ("approved".equals(successMsg)) { %>
-<p class="success">✅ Đã chấp nhận yêu cầu và gửi email thành công!</p>
+<p class="success">Đã chấp nhận yêu cầu và gửi email thành công!</p>
 <% } else if ("rejected".equals(successMsg)) { %>
-<p class="success">✅ Đã từ chối yêu cầu!</p>
+<p class="success">Đã từ chối yêu cầu!</p>
 <% } %>
 <% } %>
 
 <% if (errorMsg != null) { %>
-<p class="error" ❌ Lỗi:<%= errorMsg %></p>
+<p class="error"Lỗi:<%= errorMsg %></p>
 <% } %>
 
 <% if (warningMsg != null) { %>
 <% if ("email_failed".equals(warningMsg)) { %>
-<p class="warning">⚠️ Đã cập nhật mật khẩu nhưng gửi email thất bại. Kiểm tra EmailUtil!</p>
+<p class="warning">Đã cập nhật mật khẩu nhưng gửi email thất bại. Kiểm tra EmailUtil!</p>
 <% } %>
 <% } %>
 
@@ -139,7 +139,7 @@
                 <input type="hidden" name="action" value="approve"/>
                 <button type="submit" class="approve-btn"
                         onclick="return confirm('Chấp nhận yêu cầu cho <%= req.getEmail() %>?')">
-                    ✅ Chấp Nhận
+                    Chấp Nhận
                 </button>
             </form>
 
@@ -149,7 +149,7 @@
                 <input type="text" name="reason" placeholder="Lý do từ chối (optional)" size="20"/>
                 <button type="submit" class="reject-btn"
                         onclick="return confirm('Từ chối yêu cầu cho <%= req.getEmail() %>?')">
-                    ❌ Từ Chối
+                    Từ Chối
                 </button>
             </form>
         </td>

@@ -130,11 +130,11 @@ public class AdminPasswordResetServlet extends HttpServlet {
         );
 
         if(emailSent){
-            System.out.println("✅ Password reset approved for: " + resetRequest.getEmail());
-            System.out.println("   New password: " + newPlainPassword);
+            System.out.println("Password reset approved for: " + resetRequest.getEmail());
+            System.out.println("New password: " + newPlainPassword);
             response.sendRedirect(request.getContextPath() + "/admin/password-reset?success=approved");
         }else {
-            System.err.println("❌ Failed to send email to: " + resetRequest.getEmail());
+            System.err.println("Failed to send email to: " + resetRequest.getEmail());
             response.sendRedirect(request.getContextPath() + "/admin/password-reset?warning=email_failed");
         }
     }
@@ -153,7 +153,7 @@ public class AdminPasswordResetServlet extends HttpServlet {
         boolean sucess = resetDAO.rejectRequest(resetRequest.getId(), reason, adminId);
 
         if(sucess){
-            System.out.println("❌ Password reset rejected for: " + resetRequest.getEmail());
+            System.out.println("Password reset rejected for: " + resetRequest.getEmail());
             response.sendRedirect(request.getContextPath() + "/admin/password-reset?success=rejected");
         }else {
             response.sendRedirect(request.getContextPath() + "/admin/password-reset?error=reject_failed");

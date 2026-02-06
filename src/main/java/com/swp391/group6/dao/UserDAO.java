@@ -234,7 +234,10 @@ public class UserDAO {
      * Get a user by email (for real login - Member 2 will use this)
      */
     public User getUserByEmail(String email) {
-        String sql = "SELECT * FROM `users` WHERE `email` = ? AND `isDeleted` = 0";
+        String sql = "SELECT u.*, r.name as roleName " +
+                     "FROM `users` u " +
+                     "LEFT JOIN `roles` r ON u.roleId = r.id " +
+                     "WHERE u.`email` = ? AND u.`isDeleted` = 0";
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

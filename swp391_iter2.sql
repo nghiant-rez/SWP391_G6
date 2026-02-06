@@ -444,7 +444,7 @@ VALUES
 UPDATE `tasks` SET 
     `completedAt` = DATE_SUB(NOW(), INTERVAL 1 DAY),
     `completionNotes` = 'Da hoan thanh bao tri. May hoat dong tot.'
-WHERE `title` = 'Bao tri may cau LTM1050';
+WHERE `id` = 4 and `title` = 'Bao tri may cau LTM1050';
 
 
 -- PART 7: INDEXES FOR PERFORMANCE

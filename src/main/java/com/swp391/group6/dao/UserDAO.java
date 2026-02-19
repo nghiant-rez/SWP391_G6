@@ -14,10 +14,15 @@ public class UserDAO {
      * Get a user by ID (for mock login and general use)
      */
     public User getUserById(int userId) {
-        String sql = "SELECT * FROM `users` WHERE `id` = ? AND `isDeleted` = 0";
+        String sql =
+            "SELECT u.*, r.name AS roleName "
+            + "FROM `users` u "
+            + "LEFT JOIN `roles` r ON u.roleId = r.id "
+            + "WHERE u.`id` = ? AND u.`isDeleted` = 0";
 
         try (Connection conn = DBContext.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps =
+                 conn.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
 
@@ -220,6 +225,30 @@ public class UserDAO {
 
         } catch (SQLException e) {
             System.err.println("UserDAO.isEmailExists failed: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * Update a user's password (for change-password feature)
+     */
+    public boolean updatePassword(int userId, String hashedPassword) {
+        String sql = "UPDATE `users` SET `password` = ?, `updatedAt` = NOW()" +
+                     " WHERE `id` = ? AND `isDeleted` = 0";
+
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, hashedPassword);
+            ps.setInt(2, userId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println(
+                "UserDAO.updatePassword failed: " + e.getMessage());
             e.printStackTrace();
         }
 

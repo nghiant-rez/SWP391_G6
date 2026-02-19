@@ -20,7 +20,7 @@ public class DemoServlet extends HttpServlet {
         String cssClass;
         Connection conn = DBContext.getConnection();
         if (conn != null) {
-            statusMessage = "SUCCESS: Database Connected via XAMPP MySQL!";
+            statusMessage = "SUCCESS: Database Connected";
             cssClass = "success";
         } else {
             statusMessage = "ERROR: Could not connect to Database. Check Console Logs.";

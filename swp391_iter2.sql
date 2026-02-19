@@ -440,49 +440,6 @@ UPDATE `tasks` SET
     `completionNotes` = 'Da hoan thanh bao tri. May hoat dong tot.'
 WHERE `id` = 4 and `title` = 'Bao tri may cau LTM1050';
 
--- 6.9 Sample Service Requests (for testing)
--- Customer (id=4) submits requests
-INSERT INTO `service_requests`
-    (`requestCode`, `customerId`, `deviceId`,
-     `requestType`, `subject`, `description`,
-     `priority`, `status`, `assignedTo`)
-VALUES
-('SR-0001', 4, 1,
- 'REPAIR', 'May xuc CAT320 bi hong dong co',
- 'May xuc bi hong dong co, khong khoi dong duoc. Can sua gap.',
- 'HIGH', 'OPEN', NULL),
-
-('SR-0002', 4, 3,
- 'MAINTENANCE', 'Bao tri dinh ky may cau LTM1050',
- 'Yeu cau bao tri dinh ky theo hop dong bao hanh.',
- 'MEDIUM', 'IN_PROGRESS', 3),
-
-('SR-0003', 4, NULL,
- 'INQUIRY', 'Hoi ve gia thue may nen khi',
- 'Muon biet gia thue may nen khi cho du an 3 thang.',
- 'LOW', 'RESOLVED', 3),
-
-('SR-0004', 4, 2,
- 'WARRANTY', 'Bao hanh may xuc CAT305',
- 'May con trong thoi gian bao hanh nhung he thong thuy luc co van de.',
- 'URGENT', 'OPEN', NULL),
-
-('SR-0005', 4, NULL,
- 'COMPLAINT', 'Giao hang cham tre',
- 'Don hang giao cham 5 ngay so voi lich hen. Can giai thich.',
- 'HIGH', 'CLOSED', 3);
-
--- Update resolved/closed requests with resolution
-UPDATE `service_requests` SET
-    `resolution` = 'Da lien he tu van gia thue. Gui bao gia qua email.',
-    `resolvedAt` = DATE_SUB(NOW(), INTERVAL 1 DAY)
-WHERE `requestCode` = 'SR-0003';
-
-UPDATE `service_requests` SET
-    `resolution` = 'Da xin loi khach hang va giam gia 5% cho don tiep theo.',
-    `resolvedAt` = DATE_SUB(NOW(), INTERVAL 3 DAY)
-WHERE `requestCode` = 'SR-0005';
-
 
 -- PART 7: INDEXES FOR PERFORMANCE
 

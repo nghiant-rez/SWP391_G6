@@ -12,7 +12,7 @@
     </a>
 
     <c:choose>
-        <%-- Admin: User & Role Management --%>
+        <%-- Admin: Quan ly nguoi dung, Quan ly vai tro --%>
         <c:when test="${user.roleId == 1}">
             <a href="${ctx}/admin/users"
                style="color:#fff;text-decoration:none">
@@ -28,7 +28,7 @@
             </a>
         </c:when>
 
-        <%-- Manager: Task Management --%>
+        <%-- Manager: Quan ly cong viec, Yeu cau dich vu --%>
         <c:when test="${user.roleId == 2}">
             <a href="${ctx}/management/tasks"
                style="color:#fff;text-decoration:none">
@@ -36,7 +36,7 @@
             </a>
         </c:when>
 
-        <%-- Staff: My Tasks --%>
+        <%-- Staff: Cong viec cua toi, Yeu cau dich vu --%>
         <c:when test="${user.roleId == 3}">
             <a href="${ctx}/management/tasks"
                style="color:#fff;text-decoration:none">
@@ -50,13 +50,24 @@
                style="color:#fff;text-decoration:none">
                 Customer Page
             </a>
-        </c:otherwise>
+            <a href="${ctx}/management/service-requests/create"
+               style="color:#fff;
+                      text-decoration:none">
+                Tao yeu cau moi
+            </a>
+        </c:when>
     </c:choose>
 
-    <div style="margin-left:auto;display:flex;gap:12px;align-items:center">
+    <div style="margin-left:auto;display:flex;
+                gap:12px;align-items:center">
         <span style="color:#fff;opacity:.9">
             ${user.fullName} (${user.roleName})
         </span>
+        <a href="${ctx}/change-password"
+           style="color:#fff;
+                  text-decoration:none">
+            Doi mat khau
+        </a>
         <a href="${ctx}/logout"
            onclick="return confirm('Xác nhận đăng xuất tài khoản?')"
            style="color:#fff;text-decoration:none">

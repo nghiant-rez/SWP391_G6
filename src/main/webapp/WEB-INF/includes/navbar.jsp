@@ -55,7 +55,7 @@
                       text-decoration:none">
                 Tao yeu cau moi
             </a>
-        </c:when>
+        </c:otherwise>
     </c:choose>
 
     <div style="margin-left:auto;display:flex;

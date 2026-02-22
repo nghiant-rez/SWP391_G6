@@ -280,7 +280,7 @@
                     <input type="text"
                            name="search"
                            placeholder="Tim theo ma, chu de, khach hang..."
-                           value="${searchValue}">
+                           value="<c:out value='${searchValue}'/>">
 
                     <select name="status">
                         <option value="">
@@ -426,7 +426,7 @@
                                     </strong>
                                 </td>
                                 <td class="subject-col"
-                                    title="${sr.subject}">
+                                    title="<c:out value='${sr.subject}'/>">
                                     <c:out
                                         value="${sr.subject}"/>
                                 </td>
@@ -510,7 +510,14 @@
                 <c:if test="${totalPages > 1}">
                     <div class="pagination">
                         <c:if test="${currentPage > 1}">
-                            <a href="?page=${currentPage - 1}&search=${searchValue}&status=${statusValue}&requestType=${requestTypeValue}&priority=${priorityValue}">
+                            <c:url value="" var="prevUrl">
+                                <c:param name="page" value="${currentPage - 1}"/>
+                                <c:param name="search" value="${searchValue}"/>
+                                <c:param name="status" value="${statusValue}"/>
+                                <c:param name="requestType" value="${requestTypeValue}"/>
+                                <c:param name="priority" value="${priorityValue}"/>
+                            </c:url>
+                            <a href="${prevUrl}">
                                 Truoc
                             </a>
                         </c:if>
@@ -525,7 +532,14 @@
                                     </span>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="?page=${i}&search=${searchValue}&status=${statusValue}&requestType=${requestTypeValue}&priority=${priorityValue}">
+                                    <c:url value="" var="pageUrl">
+                                        <c:param name="page" value="${i}"/>
+                                        <c:param name="search" value="${searchValue}"/>
+                                        <c:param name="status" value="${statusValue}"/>
+                                        <c:param name="requestType" value="${requestTypeValue}"/>
+                                        <c:param name="priority" value="${priorityValue}"/>
+                                    </c:url>
+                                    <a href="${pageUrl}">
                                         ${i}
                                     </a>
                                 </c:otherwise>
@@ -533,7 +547,14 @@
                         </c:forEach>
 
                         <c:if test="${currentPage < totalPages}">
-                            <a href="?page=${currentPage + 1}&search=${searchValue}&status=${statusValue}&requestType=${requestTypeValue}&priority=${priorityValue}">
+                            <c:url value="" var="nextUrl">
+                                <c:param name="page" value="${currentPage + 1}"/>
+                                <c:param name="search" value="${searchValue}"/>
+                                <c:param name="status" value="${statusValue}"/>
+                                <c:param name="requestType" value="${requestTypeValue}"/>
+                                <c:param name="priority" value="${priorityValue}"/>
+                            </c:url>
+                            <a href="${nextUrl}">
                                 Sau
                             </a>
                         </c:if>

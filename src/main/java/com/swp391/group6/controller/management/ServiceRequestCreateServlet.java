@@ -31,6 +31,12 @@ public class ServiceRequestCreateServlet
 
         HttpSession session =
             request.getSession(false);
+        if (session == null
+                || session.getAttribute("user") == null) {
+            response.sendRedirect(
+                request.getContextPath() + "/login");
+            return;
+        }
         User currentUser =
             (User) session.getAttribute("user");
 
@@ -55,6 +61,12 @@ public class ServiceRequestCreateServlet
 
         HttpSession session =
             request.getSession(false);
+        if (session == null
+                || session.getAttribute("user") == null) {
+            response.sendRedirect(
+                request.getContextPath() + "/login");
+            return;
+        }
         User currentUser =
             (User) session.getAttribute("user");
 

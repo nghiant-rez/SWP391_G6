@@ -96,7 +96,7 @@
 <% } %>
 
 <% if (errorMsg != null) { %>
-<p class="error" ❌ Lỗi:<%= errorMsg %></p>
+<p class="error">❌ Lỗi:<%= errorMsg %></p>
 <% } %>
 
 <% if (warningMsg != null) { %>

@@ -294,14 +294,6 @@
     <div class="container">
         <div class="header">
             <h1>Quan ly cong viec</h1>
-            <div class="header-right">
-                <span>Xin chao, 
-                    <strong>${sessionScope.user.fullName}</strong>
-                    (${sessionScope.user.roleName})
-                </span>
-                <a href="${pageContext.request.contextPath}/logout" 
-                   class="btn-logout">Dang xuat</a>
-            </div>
         </div>
 
         <c:if test="${not empty param.message}">

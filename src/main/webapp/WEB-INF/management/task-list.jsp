@@ -290,6 +290,7 @@
     </style>
 </head>
 <body>
+<%@ include file="/WEB-INF/includes/navbar.jsp" %>
     <div class="container">
         <div class="header">
             <h1>Quan ly cong viec</h1>

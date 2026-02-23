@@ -90,9 +90,57 @@ public class RoleUpdateServlet extends HttpServlet {
                 "description"
             );
 
+            // Validate name is not empty
             if (name == null || name.trim().isEmpty()) {
                 request.setAttribute("error", 
                     "Ten vai tro khong duoc de trong!");
+                request.setAttribute("role", existingRole);
+                request.getRequestDispatcher(
+                    "/WEB-INF/admin/role-form.jsp"
+                ).forward(request, response);
+                return;
+            }
+
+            // Validate server-side length constraints
+            if (name.trim().length() > 50) {
+                request.setAttribute("error", 
+                    "Ten vai tro khong duoc qua 50 ky tu!");
+                request.setAttribute("role", existingRole);
+                request.getRequestDispatcher(
+                    "/WEB-INF/admin/role-form.jsp"
+                ).forward(request, response);
+                return;
+            }
+
+            if (description != null && 
+                description.trim().length() > 255) {
+                request.setAttribute("error", 
+                    "Mo ta khong duoc qua 255 ky tu!");
+                request.setAttribute("role", existingRole);
+                request.getRequestDispatcher(
+                    "/WEB-INF/admin/role-form.jsp"
+                ).forward(request, response);
+                return;
+            }
+
+            // Validate role name format (alphanumeric + underscore)
+            if (!name.trim().matches("^[a-zA-Z0-9_]+$")) {
+                request.setAttribute("error", 
+                    "Ten vai tro chi duoc chua chu cai, so " + 
+                    "va dau gach duoi!");
+                request.setAttribute("role", existingRole);
+                request.getRequestDispatcher(
+                    "/WEB-INF/admin/role-form.jsp"
+                ).forward(request, response);
+                return;
+            }
+
+            // XSS prevention - check for HTML tags
+            if (name.trim().matches(".*[<>].*") || 
+                (description != null && 
+                 description.trim().matches(".*[<>].*"))) {
+                request.setAttribute("error", 
+                    "Ky tu khong hop le phat hien!");
                 request.setAttribute("role", existingRole);
                 request.getRequestDispatcher(
                     "/WEB-INF/admin/role-form.jsp"

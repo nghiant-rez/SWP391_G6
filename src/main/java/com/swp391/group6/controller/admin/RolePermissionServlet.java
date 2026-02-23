@@ -40,7 +40,25 @@ public class RolePermissionServlet extends HttpServlet {
                 return;
             }
 
-            int roleId = Integer.parseInt(roleIdStr);
+            // Validate roleId is a valid positive integer
+            int roleId;
+            try {
+                roleId = Integer.parseInt(roleIdStr);
+                if (roleId <= 0) {
+                    response.sendRedirect(request.getContextPath() + 
+                        "/admin/roles?error=" + 
+                        URLEncoder.encode("ID vai tro khong hop le!", 
+                            "UTF-8"));
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                response.sendRedirect(request.getContextPath() + 
+                    "/admin/roles?error=" + 
+                    URLEncoder.encode("ID vai tro khong hop le!", 
+                        "UTF-8"));
+                return;
+            }
+
             Role role = roleDAO.getRoleById(roleId);
             
             if (role == null) {
@@ -60,9 +78,26 @@ public class RolePermissionServlet extends HttpServlet {
             if (permissionIdsStr != null) {
                 for (String idStr : permissionIdsStr) {
                     try {
-                        permissionIds.add(Integer.parseInt(idStr));
+                        int id = Integer.parseInt(idStr);
+                        // Validate permission ID is positive
+                        if (id <= 0) {
+                            response.sendRedirect(
+                                request.getContextPath() + 
+                                "/admin/roles/view?id=" + roleId + 
+                                "&error=" + URLEncoder.encode(
+                                    "ID quyen han khong hop le!", 
+                                    "UTF-8"));
+                            return;
+                        }
+                        permissionIds.add(id);
                     } catch (NumberFormatException e) {
-                        // Skip invalid IDs
+                        response.sendRedirect(
+                            request.getContextPath() + 
+                            "/admin/roles/view?id=" + roleId + 
+                            "&error=" + URLEncoder.encode(
+                                "ID quyen han khong hop le!", 
+                                "UTF-8"));
+                        return;
                     }
                 }
             }

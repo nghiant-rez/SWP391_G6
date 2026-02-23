@@ -23,7 +23,7 @@
     </filter-mapping>
 
     <welcome-file-list>
-        <welcome-file>demo</welcome-file>
+        <welcome-file>home</welcome-file>
     </welcome-file-list>
 
     <error-page>

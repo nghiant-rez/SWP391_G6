@@ -44,6 +44,38 @@ public class AuthorizationFilter implements Filter {
         PERMISSION_MAP.put("/admin/roles/edit", "ROLE_UPDATE");
         PERMISSION_MAP.put("/admin/roles/view", "ROLE_READ");
         PERMISSION_MAP.put("/admin/roles", "ROLE_READ");
+
+        //Admin Password Reset Management
+        PERMISSION_MAP.put("/admin/password-reset", "PASSWORD_RESET_MANAGE");
+
+        // Task Management (most specific first) - /management path
+        PERMISSION_MAP.put("/management/tasks/delete", "TASK_DELETE");
+        PERMISSION_MAP.put("/management/tasks/edit", "TASK_UPDATE");
+        PERMISSION_MAP.put("/management/tasks/create", "TASK_CREATE");
+        PERMISSION_MAP.put("/management/tasks/view", "TASK_READ");
+        PERMISSION_MAP.put("/management/tasks", "TASK_READ");
+
+        // Service Request Management (most specific first)
+        PERMISSION_MAP.put(
+            "/management/service-requests/delete",
+            "SERVICE_REQUEST_DELETE");
+        PERMISSION_MAP.put(
+            "/management/service-requests/process",
+            "SERVICE_REQUEST_PROCESS");
+        PERMISSION_MAP.put(
+            "/management/service-requests/create",
+            "SERVICE_REQUEST_CREATE");
+        PERMISSION_MAP.put(
+            "/management/service-requests/view",
+            "SERVICE_REQUEST_READ");
+        PERMISSION_MAP.put(
+            "/management/service-requests",
+            "SERVICE_REQUEST_READ");
+
+        // Customer's own service request list
+        PERMISSION_MAP.put(
+            "/my-service-requests",
+            "SERVICE_REQUEST_READ");
     }
 
     private AuthorizationService authService;
@@ -66,7 +98,19 @@ public class AuthorizationFilter implements Filter {
 
         String requestURI = httpRequest.getRequestURI();
         String contextPath = httpRequest.getContextPath();
-        String path = requestURI.substring(contextPath.length());
+        String path = requestURI.substring(
+            contextPath.length());
+
+        // Normalize: collapse multiple slashes
+        // e.g. "//admin/users" -> "/admin/users"
+        path = path.replaceAll("/+", "/");
+
+        // Remove trailing slash (except root "/")
+        if (path.length() > 1
+                && path.endsWith("/")) {
+            path = path.substring(
+                0, path.length() - 1);
+        }
 
         // Skip static resources
         if (isStaticResource(path)) {

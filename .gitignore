@@ -19,9 +19,9 @@ out/
 /nbdist/
 /.nb-gradle/
 build/
+nb-configuration.xml
 
-
-# ECLIPSE / VS CODE (Just in case)
+# ECLIPSE / VS CODE / CURSOR (Just in case)
 .apt_generated
 .classpath
 .factorypath
@@ -30,7 +30,8 @@ build/
 .springBeans
 .sts4-cache
 .vscode/
-
+.cursor/
+bin/
 
 # OPERATING SYSTEM FILES
 .DS_Store
@@ -44,6 +45,7 @@ Desktop.ini
 # APPLICATION-SPECIFIC
 *.log
 .env
+AGENTS.md
 
 # DATABASE CONFIG
 src/main/java/com/swp391/group6/util/DBContext.java

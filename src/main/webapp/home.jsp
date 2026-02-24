@@ -56,6 +56,14 @@
                       border-radius:5px;">
                 Doi mat khau
             </a>
+            <a href="admin/password-reset"
+               style="background:#e74c3c;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;">
+                thiết lập lại mật khẩu
+            </a>
         </p>
         <% } %>
 

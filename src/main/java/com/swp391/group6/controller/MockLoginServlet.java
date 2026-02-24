@@ -62,6 +62,13 @@ public class MockLoginServlet extends HttpServlet {
 
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
+            session.setAttribute("id", user.getId());
+            session.setAttribute("email",
+                user.getEmail());
+            session.setAttribute("fullName",
+                user.getFullName());
+            session.setAttribute("role",
+                user.getRoleId());
 
             out.println("<!DOCTYPE html><html><head>" +
                     "<title>Login Success</title></head><body>");

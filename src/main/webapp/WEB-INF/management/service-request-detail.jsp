@@ -1,13 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" 
           content="width=device-width, initial-scale=1.0">
-    <title>Chi tiet cong viec</title>
+    <title>Chi tiet yeu cau dich vu</title>
     <style>
         * { 
             margin: 0; 
@@ -18,11 +18,10 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background: #f5f5f5; 
             min-height: 100vh; 
-            padding: 20px; 
         }
         .container { 
             max-width: 900px; 
-            margin: 0 auto; 
+            margin: 20px auto; 
             background: white; 
             border-radius: 8px; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
@@ -92,21 +91,21 @@
             font-weight: 500; 
             display: inline-block; 
         }
-        .badge-todo { 
-            background: #e9ecef; 
-            color: #495057; 
-        }
-        .badge-in-progress { 
+        .badge-open { 
             background: #cfe2ff; 
             color: #084298; 
         }
-        .badge-done { 
+        .badge-in-progress { 
+            background: #fff3cd; 
+            color: #664d03; 
+        }
+        .badge-resolved { 
             background: #d1e7dd; 
             color: #0f5132; 
         }
-        .badge-cancelled { 
-            background: #f8d7da; 
-            color: #842029; 
+        .badge-closed { 
+            background: #e9ecef; 
+            color: #495057; 
         }
         .badge-low { 
             background: #e9ecef; 
@@ -127,9 +126,6 @@
         .badge-type { 
             background: #e2e3e5; 
             color: #41464b; 
-        }
-        .text-danger { 
-            color: #dc3545; 
         }
         .btn { 
             padding: 12px 24px; 
@@ -190,13 +186,13 @@
             color: #0f5132; 
             border: 1px solid #badbcc; 
         }
-        .completion-section { 
+        .resolution-section { 
             background: #f8f9fa; 
             padding: 20px; 
             border-radius: 8px; 
             margin-top: 20px; 
         }
-        .completion-section h3 { 
+        .resolution-section h3 { 
             font-size: 16px; 
             color: #333; 
             margin-bottom: 15px; 
@@ -204,10 +200,12 @@
     </style>
 </head>
 <body>
+
 <%@ include file="/WEB-INF/includes/navbar.jsp" %>
+
     <div class="container">
         <div class="header">
-            <h1>Chi tiet cong viec</h1>
+            <h1>Chi tiet yeu cau dich vu</h1>
         </div>
 
         <div class="content">
@@ -218,75 +216,58 @@
             </c:if>
 
             <div class="info-box">
-                <p><strong>ID:</strong> ${task.id}</p>
+                <p><strong>Ma yeu cau:</strong> 
+                    ${serviceRequest.requestCode}
+                </p>
                 <p>
                     <strong>Ngay tao:</strong> 
-                    <fmt:parseDate value="${task.createdAt}" 
-                        pattern="yyyy-MM-dd'T'HH:mm" 
-                        var="createdDate" type="both"/>
-                    <fmt:formatDate value="${createdDate}" 
-                        pattern="dd/MM/yyyy HH:mm"/>
+                    ${serviceRequest.createdAtFormatted}
                 </p>
-                <p><strong>Nguoi giao:</strong> 
-                    <c:out value="${task.assignerName}"/>
+                <p><strong>Khach hang:</strong> 
+                    <c:out value="${serviceRequest.customerName}"/>
                 </p>
             </div>
 
             <div class="detail-section">
-                <div class="detail-label">Tieu de</div>
+                <div class="detail-label">Chu de</div>
                 <div class="detail-value">
-                    <c:out value="${task.title}"/>
+                    <c:out value="${serviceRequest.subject}"/>
                 </div>
             </div>
 
             <div class="detail-section">
-                <div class="detail-label">Mo ta</div>
-                <div class="detail-value ${empty task.description ? 'empty' : ''}">
-                    <c:choose>
-                        <c:when test="${not empty task.description}">
-                            <c:out value="${task.description}"/>
-                        </c:when>
-                        <c:otherwise>
-                            Khong co mo ta
-                        </c:otherwise>
-                    </c:choose>
+                <div class="detail-label">Mo ta chi tiet</div>
+                <div class="detail-value" 
+                     style="white-space: pre-wrap;">
+                    <c:out value="${serviceRequest.description}"/>
                 </div>
             </div>
 
             <div class="detail-row">
                 <div class="detail-section">
-                    <div class="detail-label">Nguoi thuc hien</div>
-                    <div class="detail-value">
-                        <c:out value="${task.assigneeName}"/>
-                    </div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Loai cong viec</div>
+                    <div class="detail-label">Loai yeu cau</div>
                     <div class="detail-value">
                         <span class="badge badge-type">
-                            ${task.taskTypeDisplay}
+                            ${serviceRequest.requestTypeDisplay}
                         </span>
                     </div>
                 </div>
-            </div>
-
-            <div class="detail-row">
                 <div class="detail-section">
                     <div class="detail-label">Do uu tien</div>
                     <div class="detail-value">
                         <c:choose>
-                            <c:when test="${task.priority == 'LOW'}">
+                            <c:when test="${serviceRequest.priority == 'LOW'}">
                                 <span class="badge badge-low">Thap</span>
                             </c:when>
-                            <c:when test="${task.priority == 'MEDIUM'}">
+                            <c:when test="${serviceRequest.priority == 'MEDIUM'}">
                                 <span class="badge badge-medium">
                                     Trung binh
                                 </span>
                             </c:when>
-                            <c:when test="${task.priority == 'HIGH'}">
+                            <c:when test="${serviceRequest.priority == 'HIGH'}">
                                 <span class="badge badge-high">Cao</span>
                             </c:when>
-                            <c:when test="${task.priority == 'URGENT'}">
+                            <c:when test="${serviceRequest.priority == 'URGENT'}">
                                 <span class="badge badge-urgent">
                                     Khan cap
                                 </span>
@@ -294,26 +275,44 @@
                         </c:choose>
                     </div>
                 </div>
+            </div>
+
+            <div class="detail-row">
                 <div class="detail-section">
                     <div class="detail-label">Trang thai</div>
                     <div class="detail-value">
                         <c:choose>
-                            <c:when test="${task.status == 'TODO'}">
-                                <span class="badge badge-todo">Chua lam</span>
+                            <c:when test="${serviceRequest.status == 'OPEN'}">
+                                <span class="badge badge-open">Mo</span>
                             </c:when>
-                            <c:when test="${task.status == 'IN_PROGRESS'}">
+                            <c:when test="${serviceRequest.status == 'IN_PROGRESS'}">
                                 <span class="badge badge-in-progress">
-                                    Dang thuc hien
+                                    Dang xu ly
                                 </span>
                             </c:when>
-                            <c:when test="${task.status == 'DONE'}">
-                                <span class="badge badge-done">Hoan thanh</span>
-                            </c:when>
-                            <c:when test="${task.status == 'CANCELLED'}">
-                                <span class="badge badge-cancelled">
-                                    Da huy
+                            <c:when test="${serviceRequest.status == 'RESOLVED'}">
+                                <span class="badge badge-resolved">
+                                    Da giai quyet
                                 </span>
                             </c:when>
+                            <c:when test="${serviceRequest.status == 'CLOSED'}">
+                                <span class="badge badge-closed">
+                                    Da dong
+                                </span>
+                            </c:when>
+                        </c:choose>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Nguoi xu ly</div>
+                    <div class="detail-value ${empty serviceRequest.assignedToName ? 'empty' : ''}">
+                        <c:choose>
+                            <c:when test="${not empty serviceRequest.assignedToName}">
+                                <c:out value="${serviceRequest.assignedToName}"/>
+                            </c:when>
+                            <c:otherwise>
+                                Chua phan cong
+                            </c:otherwise>
                         </c:choose>
                     </div>
                 </div>
@@ -321,51 +320,39 @@
 
             <div class="detail-row">
                 <div class="detail-section">
-                    <div class="detail-label">Han hoan thanh</div>
-                    <div class="detail-value ${empty task.dueDate ? 'empty' : ''}">
+                    <div class="detail-label">Thiet bi</div>
+                    <div class="detail-value ${empty serviceRequest.deviceSerialNumber ? 'empty' : ''}">
                         <c:choose>
-                            <c:when test="${task.dueDate != null}">
-                                <span class="${task.overdue ? 'text-danger' : ''}">
-                                    <fmt:parseDate value="${task.dueDate}" 
-                                        pattern="yyyy-MM-dd'T'HH:mm" 
-                                        var="dueDate" type="both"/>
-                                    <fmt:formatDate value="${dueDate}" 
-                                        pattern="dd/MM/yyyy HH:mm"/>
-                                    <c:if test="${task.overdue}">
-                                        (Qua han)
-                                    </c:if>
-                                </span>
+                            <c:when test="${not empty serviceRequest.deviceSerialNumber}">
+                                <c:out value="${serviceRequest.deviceSerialNumber}"/>
                             </c:when>
                             <c:otherwise>
-                                Chua dat han
+                                Khong co
                             </c:otherwise>
                         </c:choose>
                     </div>
                 </div>
                 <div class="detail-section">
-                    <div class="detail-label">Hoan thanh luc</div>
-                    <div class="detail-value ${empty task.completedAt ? 'empty' : ''}">
+                    <div class="detail-label">Giai quyet luc</div>
+                    <div class="detail-value ${empty serviceRequest.resolvedAtFormatted ? 'empty' : ''}">
                         <c:choose>
-                            <c:when test="${task.completedAt != null}">
-                                <fmt:parseDate value="${task.completedAt}" 
-                                    pattern="yyyy-MM-dd'T'HH:mm" 
-                                    var="completedDate" type="both"/>
-                                <fmt:formatDate value="${completedDate}" 
-                                    pattern="dd/MM/yyyy HH:mm"/>
+                            <c:when test="${not empty serviceRequest.resolvedAtFormatted}">
+                                ${serviceRequest.resolvedAtFormatted}
                             </c:when>
                             <c:otherwise>
-                                Chua hoan thanh
+                                Chua giai quyet
                             </c:otherwise>
                         </c:choose>
                     </div>
                 </div>
             </div>
 
-            <c:if test="${task.status == 'DONE' && not empty task.completionNotes}">
-                <div class="completion-section">
-                    <h3>Ghi chu hoan thanh</h3>
-                    <div class="detail-value">
-                        <c:out value="${task.completionNotes}"/>
+            <c:if test="${not empty serviceRequest.resolution}">
+                <div class="resolution-section">
+                    <h3>Ket qua xu ly</h3>
+                    <div class="detail-value" 
+                         style="white-space: pre-wrap;">
+                        <c:out value="${serviceRequest.resolution}"/>
                     </div>
                 </div>
             </c:if>
@@ -374,35 +361,30 @@
                 <div class="detail-section">
                     <div class="detail-label">Cap nhat luc</div>
                     <div class="detail-value">
-                        <c:if test="${task.updatedAt != null}">
-                            <fmt:parseDate value="${task.updatedAt}" 
-                                pattern="yyyy-MM-dd'T'HH:mm" 
-                                var="updatedDate" type="both"/>
-                            <fmt:formatDate value="${updatedDate}" 
-                                pattern="dd/MM/yyyy HH:mm"/>
-                        </c:if>
+                        ${serviceRequest.updatedAtFormatted}
                     </div>
                 </div>
             </div>
 
             <div class="form-actions">
-                <c:if test="${canUpdate}">
-                    <a href="${pageContext.request.contextPath}/management/tasks/edit?id=${task.id}" 
+                <c:if test="${canProcess}">
+                    <a href="${pageContext.request.contextPath}/management/service-requests/process?id=${serviceRequest.id}" 
                        class="btn btn-warning">
-                        Chinh sua
+                        Xu ly yeu cau
                     </a>
                 </c:if>
                 <c:if test="${canDelete}">
                     <form method="post" 
-                          action="${pageContext.request.contextPath}/management/tasks/delete"
-                          onsubmit="return confirm('Ban co chac muon xoa cong viec nay?');">
-                        <input type="hidden" name="taskId" value="${task.id}">
+                          action="${pageContext.request.contextPath}/management/service-requests/delete"
+                          onsubmit="return confirm('Ban co chac muon xoa yeu cau nay?');">
+                        <input type="hidden" name="requestId" 
+                               value="${serviceRequest.id}">
                         <button type="submit" class="btn btn-danger">
                             Xoa
                         </button>
                     </form>
                 </c:if>
-                <a href="${pageContext.request.contextPath}/management/tasks" 
+                <a href="${pageContext.request.contextPath}/management/service-requests" 
                    class="btn btn-secondary">
                     Quay lai danh sach
                 </a>

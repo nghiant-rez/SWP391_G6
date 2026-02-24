@@ -21,6 +21,7 @@ out/
 build/
 nb-configuration.xml
 
+
 # ECLIPSE / VS CODE / CURSOR (Just in case)
 .apt_generated
 .classpath
@@ -32,6 +33,7 @@ nb-configuration.xml
 .vscode/
 .cursor/
 bin/
+
 
 # OPERATING SYSTEM FILES
 .DS_Store

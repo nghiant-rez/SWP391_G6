@@ -17,64 +17,151 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Home</title>
+        <meta http-equiv="Content-Type"
+            content="text/html; charset=UTF-8">
+        <title>Trang chu</title>
     </head>
     <body>
-        <h2>Welcome</h2>
-        <p>FullName: <%= user.getFullName() %></p>
+        <h2>Xin chao</h2>
+        <p>Ho ten: <%= user.getFullName() %></p>
         <p>Email: <%= user.getEmail() %></p>
 
-        <%-- Admin: Password Reset Management --%>
-        <% if (user.getRoleId() != null && user.getRoleId() == 1) { %>
+        <%-- Admin: Quan ly nguoi dung, Quan ly vai tro --%>
+        <% if (user.getRoleId() != null
+                && user.getRoleId() == 1) { %>
         <p>
-            <a href="admin/users" 
-               style="background: #3498db; color: white; padding: 10px 20px; 
-                      text-decoration: none; border-radius: 5px; 
-                      margin-right: 10px;">
-                User Management
+            <a href="admin/users"
+               style="background:#3498db;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Quan ly nguoi dung
             </a>
-            <a href="admin/roles" 
-               style="background: #9b59b6; color: white; padding: 10px 20px; 
-                      text-decoration: none; border-radius: 5px; 
-                      margin-right: 10px;">
-                Role Management
+            <a href="admin/roles"
+               style="background:#9b59b6;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Quan ly vai tro
             </a>
-            <a href="admin/password-reset" 
-               style="background: #667eea; color: white; padding: 10px 20px; 
-                      text-decoration: none; border-radius: 5px;">
-                Password Reset Requests
+            <a href="change-password"
+               style="background:#e67e22;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;">
+                Doi mat khau
             </a>
         </p>
         <% } %>
-        
-        <%-- Manager: Task Management --%>
-        <% if (user.getRoleId() != null && user.getRoleId() == 2) { %>
+
+        <%-- Manager: Quan ly cong viec, Yeu cau dich vu --%>
+        <% if (user.getRoleId() != null
+                && user.getRoleId() == 2) { %>
         <p>
-            <a href="management/tasks" 
-               style="background: #27ae60; color: white; padding: 10px 20px; 
-                      text-decoration: none; border-radius: 5px; 
-                      margin-right: 10px;">
-                Task Management
+            <a href="management/tasks"
+               style="background:#27ae60;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Quan ly cong viec
+            </a>
+            <a href="management/service-requests"
+               style="background:#e67e22;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Yeu cau dich vu
+            </a>
+            <a href="change-password"
+               style="background:#8e44ad;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;">
+                Doi mat khau
             </a>
         </p>
         <% } %>
-        
-        <%-- Staff: Task Management (view/update only) --%>
-        <% if (user.getRoleId() != null && user.getRoleId() == 3) { %>
+
+        <%-- Staff: Cong viec cua toi, Yeu cau dich vu --%>
+        <% if (user.getRoleId() != null
+                && user.getRoleId() == 3) { %>
         <p>
-            <a href="management/tasks" 
-               style="background: #27ae60; color: white; padding: 10px 20px; 
-                      text-decoration: none; border-radius: 5px;">
-                My Tasks
+            <a href="management/tasks"
+               style="background:#27ae60;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Cong viec cua toi
+            </a>
+            <a href="management/service-requests"
+               style="background:#e67e22;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Yeu cau dich vu
+            </a>
+            <a href="change-password"
+               style="background:#8e44ad;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;">
+                Doi mat khau
             </a>
         </p>
         <% } %>
-        
+
+        <%-- Customer: Yeu cau dich vu, Tao yeu cau moi --%>
+        <% if (user.getRoleId() != null
+                && user.getRoleId() == 4) { %>
+        <p>
+            <a href="my-service-requests"
+               style="background:#e67e22;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Yeu cau dich vu
+            </a>
+            <a href="management/service-requests/create"
+               style="background:#3498db;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Tao yeu cau moi
+            </a>
+            <a href="change-password"
+               style="background:#8e44ad;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;">
+                Doi mat khau
+            </a>
+        </p>
+        <% } %>
+
         <br/>
-        <a href="logout" 
+        <a href="logout"
            onclick="return confirm('Ban co muon dang xuat khong?')">
-            Logout
+            Dang xuat
         </a>
     </body>
 </html>

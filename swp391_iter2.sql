@@ -212,9 +212,10 @@ CREATE TABLE `service_requests` (
     `status` ENUM('OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED') DEFAULT 'OPEN',
     `assignedTo` INT DEFAULT NULL,
     `resolution` TEXT,
-    `resolvedAt` TIMESTAMP NULL,
+    `resolvedAt` DATETIME NULL DEFAULT NULL,
     `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `isDeleted` TINYINT(1) DEFAULT 0,
     FOREIGN KEY (`customerId`) REFERENCES `users`(`id`),
     FOREIGN KEY (`contractId`) REFERENCES `contracts`(`id`),
     FOREIGN KEY (`deviceId`) REFERENCES `devices`(`id`),
@@ -236,64 +237,56 @@ CREATE TABLE `feedbacks` (
 
 -- PART 6: SEED DATA
 
--- 6.1 Roles (PRESERVED from Iteration 1)
+-- 6.1 Roles 
 INSERT INTO `roles` (`name`, `description`) VALUES 
 ('ADMINISTRATOR', 'Full system access'),
 ('MANAGER', 'Manage staff and products'),
 ('STAFF', 'Process orders'),
 ('CUSTOMER', 'Buy products');
 
--- 6.2 Permissions (Iteration 1 + New for Iteration 2)
+-- 6.2 Permissions
 INSERT INTO `permissions` (`name`, `displayName`, `description`) VALUES
--- User Management (from Iteration 1)
+
 ('USER_READ', 'View Users', 'Can see user list'),
 ('USER_CREATE', 'Create User', 'Can add new users'),
 ('USER_UPDATE', 'Edit User', 'Can update user details'),
 ('USER_DELETE', 'Delete User', 'Can soft delete users'),
 
--- Role Management (from Iteration 1)
 ('ROLE_READ', 'View Roles', 'Can see role list and details'),
 ('ROLE_UPDATE', 'Manage Roles', 'Can edit role permissions'),
 
--- Product Management (Iteration 2)
 ('PRODUCT_READ', 'View Products', 'View product catalog'),
 ('PRODUCT_CREATE', 'Create Product', 'Add new products'),
 ('PRODUCT_UPDATE', 'Update Product', 'Edit product details'),
 ('PRODUCT_DELETE', 'Delete Product', 'Remove products'),
 
--- Category Management (Iteration 2)
 ('CATEGORY_READ', 'View Categories', 'View category list'),
 ('CATEGORY_CREATE', 'Create Category', 'Add new categories'),
 ('CATEGORY_UPDATE', 'Update Category', 'Edit category details'),
 ('CATEGORY_DELETE', 'Delete Category', 'Remove categories'),
 
--- Device Management (Iteration 2)
 ('DEVICE_READ', 'View Devices', 'View device inventory'),
 ('DEVICE_CREATE', 'Create Device', 'Add new devices'),
 ('DEVICE_UPDATE', 'Update Device', 'Edit device details'),
 
--- Contract Management (Iteration 2)
 ('CONTRACT_READ', 'View Contracts', 'View contract list'),
 ('CONTRACT_CREATE', 'Create Contract', 'Create contract drafts'),
 ('CONTRACT_APPROVE', 'Approve Contract', 'Approve or reject contracts'),
 ('CONTRACT_UPDATE', 'Update Contract', 'Edit contract details'),
 
--- Task Management (Iteration 2)
 ('TASK_READ', 'View Tasks', 'View task list'),
 ('TASK_CREATE', 'Create Task', 'Assign tasks to staff'),
 ('TASK_UPDATE', 'Update Task', 'Update task status'),
 ('TASK_DELETE', 'Delete Task', 'Soft-delete tasks'),
 
--- Service Request (Iteration 3)
 ('SERVICE_REQUEST_CREATE', 'Create Service Request', 'Submit service requests'),
 ('SERVICE_REQUEST_READ', 'View Service Requests', 'View service request list'),
 ('SERVICE_REQUEST_PROCESS', 'Process Service Request', 'Handle requests'),
+('SERVICE_REQUEST_DELETE', 'Delete Service Request', 'Soft-delete service requests'),
 
--- Feedback (Iteration 3)
 ('FEEDBACK_CREATE', 'Create Feedback', 'Submit product reviews'),
 ('FEEDBACK_READ', 'View Feedbacks', 'View product reviews'),
 
--- Password Reset Management (Iteration 1)
 ('PASSWORD_RESET_MANAGE', 'Manage Password Resets', 'Approve or reject password reset requests');
 
 -- 6.3 Role-Permission Mapping
@@ -314,6 +307,7 @@ WHERE `name` IN (
     'CONTRACT_READ', 'CONTRACT_CREATE', 'CONTRACT_APPROVE', 'CONTRACT_UPDATE',
     'TASK_READ', 'TASK_CREATE', 'TASK_UPDATE', 'TASK_DELETE',
     'SERVICE_REQUEST_READ', 'SERVICE_REQUEST_PROCESS',
+    'SERVICE_REQUEST_DELETE',
     'FEEDBACK_READ'
 );
 

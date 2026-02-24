@@ -205,7 +205,7 @@
                         ${sessionScope.user.fullName}
                     </strong>
                 </span>
-                <a href="${pageContext.request.contextPath}/mock-login?logout=true" 
+                <a href="${pageContext.request.contextPath}/login?logout=true" 
                    class="btn-logout">
                     Đăng xuất
                 </a>

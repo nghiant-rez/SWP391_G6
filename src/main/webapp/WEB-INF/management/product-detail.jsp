@@ -266,10 +266,10 @@
 
         <div class="content">
             <c:if test="${not empty param.success}">
-                <div class="alert alert-success">${param.success}</div>
+                <div class="alert alert-success"><c:out value="${param.success}"/></div>
             </c:if>
             <c:if test="${not empty error}">
-                <div class="alert alert-error">${error}</div>
+                <div class="alert alert-error"><c:out value="${error}"/></div>
             </c:if>
 
             <div class="tabs">
@@ -372,7 +372,10 @@
                             <div class="info-group">
                                 <div class="info-label">Created At</div>
                                 <div class="info-value">
-                                    <fmt:formatDate value="${product.createdAt}" 
+                                    <fmt:parseDate value="${product.createdAt}" 
+                                                   pattern="yyyy-MM-dd'T'HH:mm"
+                                                   var="parsedCreated" type="both"/>
+                                    <fmt:formatDate value="${parsedCreated}" 
                                                    pattern="dd/MM/yyyy HH:mm"/>
                                 </div>
                             </div>
@@ -380,7 +383,10 @@
                             <div class="info-group">
                                 <div class="info-label">Last Updated</div>
                                 <div class="info-value">
-                                    <fmt:formatDate value="${product.updatedAt}" 
+                                    <fmt:parseDate value="${product.updatedAt}" 
+                                                   pattern="yyyy-MM-dd'T'HH:mm"
+                                                   var="parsedUpdated" type="both"/>
+                                    <fmt:formatDate value="${parsedUpdated}" 
                                                    pattern="dd/MM/yyyy HH:mm"/>
                                 </div>
                             </div>

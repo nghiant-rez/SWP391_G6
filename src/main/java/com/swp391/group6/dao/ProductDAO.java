@@ -256,8 +256,11 @@ public class ProductDAO {
         product.setImageUrl(rs.getString("imageUrl"));
         product.setStatus(rs.getString("status"));
         product.setDeleted(rs.getBoolean("isDeleted"));
-        product.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
-        product.setUpdatedAt(rs.getTimestamp("updatedAt").toLocalDateTime());
+        
+        Timestamp createdAtTs = rs.getTimestamp("createdAt");
+        product.setCreatedAt(createdAtTs != null ? createdAtTs.toLocalDateTime() : null);
+        Timestamp updatedAtTs = rs.getTimestamp("updatedAt");
+        product.setUpdatedAt(updatedAtTs != null ? updatedAtTs.toLocalDateTime() : null);
 
         int createdBy = rs.getInt("createdBy");
         product.setCreatedBy(rs.wasNull() ? null : createdBy);

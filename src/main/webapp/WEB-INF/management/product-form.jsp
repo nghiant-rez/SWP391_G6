@@ -135,7 +135,7 @@
 
         <div class="form-container">
             <c:if test="${not empty error}">
-                <div class="alert alert-error">${error}</div>
+                <div class="alert alert-error"><c:out value="${error}"/></div>
             </c:if>
 
             <form method="POST" action="${pageContext.request.contextPath}/management/products/create">
@@ -146,7 +146,7 @@
                     <select id="categoryId" name="categoryId" required>
                         <option value="">-- Select Category --</option>
                         <c:forEach var="cat" items="${categories}">
-                            <option value="${cat.id}">${cat.name}</option>
+                            <option value="${cat.id}"><c:out value="${cat.name}"/></option>
                         </c:forEach>
                     </select>
                 </div>

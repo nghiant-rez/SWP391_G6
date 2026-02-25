@@ -210,10 +210,10 @@
         </div>
 
         <c:if test="${not empty param.success}">
-            <div class="alert alert-success">${param.success}</div>
+            <div class="alert alert-success"><c:out value="${param.success}"/></div>
         </c:if>
         <c:if test="${not empty param.error}">
-            <div class="alert alert-error">${param.error}</div>
+            <div class="alert alert-error"><c:out value="${param.error}"/></div>
         </c:if>
 
         <div class="toolbar">
@@ -228,7 +228,7 @@
                 <input type="text" 
                        name="keyword" 
                        placeholder="Search by name, model, brand..."
-                       value="${keyword}">
+                       value="<c:out value='${keyword}'/>">
                 
                 <select name="categoryId">
                     <option value="">All Categories</option>

@@ -34,6 +34,10 @@
                style="color:#fff;text-decoration:none">
                 Task Management
             </a>
+            <a href="${ctx}/management/products"
+               style="color:#fff;text-decoration:none">
+                Product Management
+            </a>
         </c:when>
 
         <%-- Staff: Cong viec cua toi, Yeu cau dich vu --%>

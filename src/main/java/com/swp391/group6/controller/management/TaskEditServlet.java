@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 
 @WebServlet(name = "TaskEditServlet", urlPatterns = {"/management/tasks/edit"})
 public class TaskEditServlet extends HttpServlet {

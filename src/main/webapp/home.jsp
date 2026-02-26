@@ -89,6 +89,15 @@
                       margin-right:10px;">
                 Yeu cau dich vu
             </a>
+            <a href="management/contracts"
+               style="background:#2980b9;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Quan ly hop dong
+            </a>
             <a href="change-password"
                style="background:#8e44ad;
                       color:white;
@@ -121,6 +130,15 @@
                       border-radius:5px;
                       margin-right:10px;">
                 Yeu cau dich vu
+            </a>
+            <a href="management/contracts"
+               style="background:#2980b9;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Quan ly hop dong
             </a>
             <a href="change-password"
                style="background:#8e44ad;

@@ -72,6 +72,13 @@ public class AuthorizationFilter implements Filter {
             "/management/service-requests",
             "SERVICE_REQUEST_READ");
 
+        // Product Management (most specific first)
+        PERMISSION_MAP.put("/management/products/detail", "PRODUCT_READ");
+        PERMISSION_MAP.put("/management/products/create", "PRODUCT_CREATE");
+        PERMISSION_MAP.put("/management/products/delete", "PRODUCT_DELETE");
+        PERMISSION_MAP.put("/management/products/update", "PRODUCT_UPDATE");
+        PERMISSION_MAP.put("/management/products", "PRODUCT_READ");
+
         // Customer's own service request list
         PERMISSION_MAP.put(
             "/my-service-requests",

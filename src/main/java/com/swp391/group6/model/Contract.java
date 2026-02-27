@@ -1,11 +1,26 @@
 package com.swp391.group6.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class Contract {
+public class Contract implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public static final String STATUS_DRAFT = "DRAFT";
+    public static final String STATUS_PENDING = "PENDING";
+    public static final String STATUS_APPROVED = "APPROVED";
+    public static final String STATUS_REJECTED = "REJECTED";
+    public static final String STATUS_COMPLETED= "COMPLETED";
+
+    public static final String[] STATUS = {
+            STATUS_DRAFT, STATUS_PENDING, STATUS_APPROVED,
+            STATUS_REJECTED, STATUS_COMPLETED
+    };
+
     private int id;
     private String contractCode;
     private int customerId;

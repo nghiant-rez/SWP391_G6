@@ -106,6 +106,15 @@
                       border-radius:5px;">
                 Doi mat khau
             </a>
+            <a href="contracts/list"
+               style="background:#2980b9;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Quan ly hop dong
+            </a>
         </p>
         <% } %>
 

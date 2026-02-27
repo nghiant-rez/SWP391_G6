@@ -83,6 +83,16 @@ public class AuthorizationFilter implements Filter {
         PERMISSION_MAP.put(
             "/my-service-requests",
             "SERVICE_REQUEST_READ");
+
+        // Contract Management (most specific first)
+        // Contract Management (most specific first)
+        PERMISSION_MAP.put("/management/contracts/deactivate", "CONTRACT_APPROVE");
+        PERMISSION_MAP.put("/management/contracts/approve",    "CONTRACT_APPROVE");
+        PERMISSION_MAP.put("/management/contracts/reject",     "CONTRACT_APPROVE");
+        PERMISSION_MAP.put("/management/contracts/edit",       "CONTRACT_UPDATE");
+        PERMISSION_MAP.put("/management/contracts/create",     "CONTRACT_CREATE");
+        PERMISSION_MAP.put("/management/contracts/view",       "CONTRACT_READ");
+        PERMISSION_MAP.put("/management/contracts",            "CONTRACT_READ");
     }
 
     private AuthorizationService authService;

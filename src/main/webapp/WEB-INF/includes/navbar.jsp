@@ -38,6 +38,14 @@
                style="color:#fff;text-decoration:none">
                 Product Management
             </a>
+            <a href="${ctx}/management/categories"
+               style="color:#fff;text-decoration:none">
+                Category Management
+            </a>
+            <a href="${ctx}/management/devices"
+               style="color:#fff;text-decoration:none">
+                Device Inventory
+            </a>
         </c:when>
 
         <%-- Staff: Cong viec cua toi, Yeu cau dich vu --%>

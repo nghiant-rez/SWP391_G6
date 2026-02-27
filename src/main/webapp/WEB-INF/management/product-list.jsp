@@ -202,7 +202,7 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>📦 Product Management</h1>
+            <h1>Product Management</h1>
             <a href="${pageContext.request.contextPath}/management/products/create" 
                class="btn btn-success">
                 + Add New Product
@@ -252,7 +252,7 @@
                     </option>
                 </select>
                 
-                <button type="submit" class="btn btn-primary">🔍 Search</button>
+                <button type="submit" class="btn btn-primary">Search</button>
                 <a href="${pageContext.request.contextPath}/management/products" 
                    class="btn" style="background: #95a5a6; color: white;">
                     Clear
@@ -297,7 +297,7 @@
                                                 <div style="width: 60px; height: 60px; background: #e9ecef; 
                                                             border-radius: 6px; display: flex; 
                                                             align-items: center; justify-content: center;">
-                                                    📦
+                                                    
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>

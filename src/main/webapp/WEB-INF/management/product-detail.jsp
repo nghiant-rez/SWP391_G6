@@ -257,7 +257,7 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>📦 Product Details</h1>
+            <h1>Product Details</h1>
             <a href="${pageContext.request.contextPath}/management/products" 
                class="btn btn-secondary">
                 ← Back to List
@@ -274,10 +274,10 @@
 
             <div class="tabs">
                 <button class="tab active" onclick="switchTab('view')">
-                    👁️ View Details
+                    View Details
                 </button>
                 <button class="tab" onclick="switchTab('edit')">
-                    ✏️ Edit Product
+                    Edit Product
                 </button>
             </div>
 
@@ -292,7 +292,7 @@
                                      class="product-image">
                             </c:when>
                             <c:otherwise>
-                                <div class="no-image">📦</div>
+                                <div class="no-image">No Image</div>
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -491,18 +491,18 @@
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-success">
-                            ✓ Save Changes
+                            Save Changes
                         </button>
                         <button type="button" 
                                 class="btn btn-secondary" 
                                 onclick="switchTab('view')">
-                            ✗ Cancel
+                            Cancel
                         </button>
                     </div>
                 </form>
 
                 <div class="delete-section">
-                    <h3>⚠️ Danger Zone</h3>
+                    <h3>Danger Zone</h3>
                     <p>Once you delete this product, there is no going back. Please be certain.</p>
                     <form method="POST" 
                           action="${pageContext.request.contextPath}/management/products/detail"
@@ -510,7 +510,7 @@
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id" value="${product.id}">
                         <button type="submit" class="btn btn-danger">
-                            🗑️ Delete Product
+                            Delete Product
                         </button>
                     </form>
                 </div>

@@ -268,6 +268,7 @@ INSERT INTO `permissions` (`name`, `displayName`, `description`) VALUES
 ('DEVICE_READ', 'View Devices', 'View device inventory'),
 ('DEVICE_CREATE', 'Create Device', 'Add new devices'),
 ('DEVICE_UPDATE', 'Update Device', 'Edit device details'),
+('DEVICE_DELETE', 'Delete Device', 'Remove devices'),
 
 ('CONTRACT_READ', 'View Contracts', 'View contract list'),
 ('CONTRACT_CREATE', 'Create Contract', 'Create contract drafts'),
@@ -303,7 +304,7 @@ SELECT 2, id FROM `permissions`
 WHERE `name` IN (
     'PRODUCT_READ', 'PRODUCT_CREATE', 'PRODUCT_UPDATE', 'PRODUCT_DELETE',
     'CATEGORY_READ', 'CATEGORY_CREATE', 'CATEGORY_UPDATE', 'CATEGORY_DELETE',
-    'DEVICE_READ', 'DEVICE_CREATE', 'DEVICE_UPDATE',
+    'DEVICE_READ', 'DEVICE_CREATE', 'DEVICE_UPDATE', 'DEVICE_DELETE',
     'CONTRACT_READ', 'CONTRACT_CREATE', 'CONTRACT_APPROVE', 'CONTRACT_UPDATE',
     'TASK_READ', 'TASK_CREATE', 'TASK_UPDATE', 'TASK_DELETE',
     'SERVICE_REQUEST_READ', 'SERVICE_REQUEST_PROCESS',

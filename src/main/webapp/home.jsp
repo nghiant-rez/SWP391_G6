@@ -98,13 +98,23 @@
                       margin-right:10px;">
                 Quan ly san pham
             </a>
-            <a href="change-password"
-               style="background:#8e44ad;
+            <a href="management/categories"
+               style="background:#3498db;
                       color:white;
                       padding:10px 20px;
                       text-decoration:none;
-                      border-radius:5px;">
-                Doi mat khau
+                      border-radius:5px;
+                      margin-right:10px;">
+                Quan ly danh muc
+            </a>
+            <a href="management/devices"
+               style="background:#9b59b6;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;
+                      margin-right:10px;">
+                Quan ly thiet bi
             </a>
             <a href="contracts/list"
                style="background:#2980b9;
@@ -114,6 +124,14 @@
                       border-radius:5px;
                       margin-right:10px;">
                 Quan ly hop dong
+            </a>
+            <a href="change-password"
+               style="background:#8e44ad;
+                      color:white;
+                      padding:10px 20px;
+                      text-decoration:none;
+                      border-radius:5px;">
+                Doi mat khau
             </a>
         </p>
         <% } %>

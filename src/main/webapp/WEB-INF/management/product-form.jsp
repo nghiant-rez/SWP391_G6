@@ -123,28 +123,6 @@
             color: #6c757d;
             margin-top: 5px;
         }
-        .error-message {
-            color: #e74c3c;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-        input.invalid,
-        textarea.invalid,
-        select.invalid {
-            border-color: #e74c3c;
-        }
-        input.valid,
-        textarea.valid,
-        select.valid {
-            border-color: #27ae60;
-        }
-        .char-counter {
-            font-size: 12px;
-            color: #6c757d;
-            text-align: right;
-            margin-top: 5px;
-        }
     </style>
 </head>
 <body>
@@ -152,12 +130,12 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>Add New Product</h1>
+            <h1>➕ Add New Product</h1>
         </div>
 
         <div class="form-container">
             <c:if test="${not empty error}">
-                <div class="alert alert-error"><c:out value="${error}"/></div>
+                <div class="alert alert-error">${error}</div>
             </c:if>
 
             <form method="POST" action="${pageContext.request.contextPath}/management/products/create">
@@ -168,7 +146,7 @@
                     <select id="categoryId" name="categoryId" required>
                         <option value="">-- Select Category --</option>
                         <c:forEach var="cat" items="${categories}">
-                            <option value="${cat.id}"><c:out value="${cat.name}"/></option>
+                            <option value="${cat.id}">${cat.name}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -181,12 +159,7 @@
                            id="name" 
                            name="name" 
                            placeholder="Enter product name"
-                           required
-                           minlength="3"
-                           maxlength="200"
-                           pattern="^[a-zA-Z0-9\s\-\.\/\(\)]+$"
-                           title="Product name must be 3-200 characters (letters, numbers, spaces, and basic punctuation only)">
-                    <div class="help-text">3-200 characters, letters, numbers, spaces, and basic punctuation</div>
+                           required>
                 </div>
 
                 <div class="form-row">
@@ -195,11 +168,7 @@
                         <input type="text" 
                                id="model" 
                                name="model" 
-                               placeholder="e.g., XYZ-123"
-                               maxlength="50"
-                               pattern="^[a-zA-Z0-9\s\-]+$"
-                               title="Model should contain only letters, numbers, spaces, and hyphens">
-                        <div class="help-text">Max 50 characters</div>
+                               placeholder="e.g., XYZ-123">
                     </div>
 
                     <div class="form-group">
@@ -207,29 +176,19 @@
                         <input type="text" 
                                id="brand" 
                                name="brand" 
-                               placeholder="e.g., Samsung, Dell"
-                               maxlength="100"
-                               pattern="^[a-zA-Z0-9\s\-&\.]+$"
-                               title="Brand should contain only letters, numbers, spaces, hyphens, and &">
-                        <div class="help-text">Max 100 characters</div>
+                               placeholder="e.g., Samsung, Dell">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="basePrice">
-                            Base Price ($) <span class="required">*</span>
-                        </label>
+                        <label for="basePrice">Base Price ($)</label>
                         <input type="number" 
                                id="basePrice" 
                                name="basePrice" 
                                step="0.01"
                                min="0"
-                               max="999999.99"
-                               placeholder="0.00"
-                               required
-                               title="Price must be between 0 and 999,999.99">
-                        <div class="help-text">Enter a valid price (0.00 - 999,999.99)</div>
+                               placeholder="0.00">
                     </div>
 
                     <div class="form-group">
@@ -243,136 +202,39 @@
 
                 <div class="form-group">
                     <label for="imageUrl">Image URL</label>
-                    <input type="url" 
+                    <input type="text" 
                            id="imageUrl" 
                            name="imageUrl" 
-                           placeholder="https://example.com/image.jpg"
-                           maxlength="500"
-                           pattern="https?://.+"
-                           title="Please enter a valid URL starting with http:// or https://">
-                    <div class="help-text">Enter a valid URL to the product image (max 500 characters)</div>
+                           placeholder="https://example.com/image.jpg">
+                    <div class="help-text">Enter a URL to the product image</div>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea id="description" 
                               name="description" 
-                              placeholder="Enter product description"
-                              maxlength="2000"></textarea>
-                    <div class="help-text">Max 2000 characters</div>
+                              placeholder="Enter product description"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="specifications">Specifications</label>
                     <textarea id="specifications" 
                               name="specifications" 
-                              placeholder="Enter technical specifications"
-                              maxlength="5000"></textarea>
-                    <div class="help-text">Enter technical details, features, etc. (max 5000 characters)</div>
+                              placeholder="Enter technical specifications"></textarea>
+                    <div class="help-text">Enter technical details, features, etc.</div>
                 </div>
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">
-                        Create Product
+                        ✓ Create Product
                     </button>
                     <a href="${pageContext.request.contextPath}/management/products" 
                        class="btn btn-secondary">
-                        Cancel
+                        ✗ Cancel
                     </a>
                 </div>
             </form>
         </div>
     </div>
-
-    <script>
-        // Real-time validation
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            const inputs = form.querySelectorAll('input, select, textarea');
-
-            // Add character counters for textareas
-            document.querySelectorAll('textarea[maxlength]').forEach(textarea => {
-                const maxLength = textarea.getAttribute('maxlength');
-                const counter = document.createElement('div');
-                counter.className = 'char-counter';
-                counter.textContent = `0 / ${maxLength} characters`;
-                textarea.parentNode.appendChild(counter);
-
-                textarea.addEventListener('input', function() {
-                    const currentLength = this.value.length;
-                    counter.textContent = `${currentLength} / ${maxLength} characters`;
-                    if (currentLength > maxLength * 0.9) {
-                        counter.style.color = '#e74c3c';
-                    } else {
-                        counter.style.color = '#6c757d';
-                    }
-                });
-            });
-
-            // Real-time validation for inputs
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    validateField(this);
-                });
-
-                input.addEventListener('input', function() {
-                    if (this.classList.contains('invalid')) {
-                        validateField(this);
-                    }
-                });
-            });
-
-            // Validate field
-            function validateField(field) {
-                if (field.checkValidity()) {
-                    field.classList.remove('invalid');
-                    field.classList.add('valid');
-                } else {
-                    field.classList.remove('valid');
-                    field.classList.add('invalid');
-                }
-            }
-
-            // Form submission validation
-            form.addEventListener('submit', function(e) {
-                let isValid = true;
-                inputs.forEach(input => {
-                    validateField(input);
-                    if (!input.checkValidity()) {
-                        isValid = false;
-                    }
-                });
-
-                if (!isValid) {
-                    e.preventDefault();
-                    alert('Please fix all validation errors before submitting.');
-                    // Focus on first invalid field
-                    const firstInvalid = form.querySelector('.invalid');
-                    if (firstInvalid) {
-                        firstInvalid.focus();
-                    }
-                }
-            });
-
-            // Price validation - ensure only 2 decimal places
-            const priceInput = document.getElementById('basePrice');
-            if (priceInput) {
-                priceInput.addEventListener('change', function() {
-                    if (this.value) {
-                        this.value = parseFloat(this.value).toFixed(2);
-                    }
-                });
-            }
-
-            // Trim whitespace on text inputs before submit
-            form.addEventListener('submit', function() {
-                inputs.forEach(input => {
-                    if (input.type === 'text' || input.tagName === 'TEXTAREA') {
-                        input.value = input.value.trim();
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>

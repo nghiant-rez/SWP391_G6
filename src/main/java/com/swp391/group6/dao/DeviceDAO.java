@@ -130,6 +130,103 @@ public class DeviceDAO {
     }
 
     /**
+     * Insert a new device
+     */
+    public boolean insertDevice(Device device) {
+        String sql = "INSERT INTO devices (productId, serialNumber, status, condition, " +
+                    "currentLocation, notes, createdBy, createdAt, updatedAt) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE())";
+
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, device.getProductId());
+            ps.setString(2, device.getSerialNumber());
+            ps.setString(3, device.getStatus());
+            ps.setString(4, device.getCondition());
+            ps.setString(5, device.getCurrentLocation());
+            ps.setString(6, device.getNotes());
+            ps.setObject(7, device.getCreatedBy());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Update an existing device
+     */
+    public boolean updateDevice(Device device) {
+        String sql = "UPDATE devices SET productId = ?, serialNumber = ?, status = ?, " +
+                    "condition = ?, currentLocation = ?, notes = ?, updatedAt = GETDATE() " +
+                    "WHERE id = ? AND isDeleted = 0";
+
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, device.getProductId());
+            ps.setString(2, device.getSerialNumber());
+            ps.setString(3, device.getStatus());
+            ps.setString(4, device.getCondition());
+            ps.setString(5, device.getCurrentLocation());
+            ps.setString(6, device.getNotes());
+            ps.setInt(7, device.getId());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Soft delete a device
+     */
+    public boolean deleteDevice(int id) {
+        String sql = "UPDATE devices SET isDeleted = 1, updatedAt = GETDATE() WHERE id = ?";
+
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Check if serial number exists (for validation)
+     */
+    public boolean serialNumberExists(String serialNumber, Integer excludeId) {
+        String sql = "SELECT COUNT(*) FROM devices WHERE serialNumber = ? AND isDeleted = 0";
+        if (excludeId != null) {
+            sql += " AND id != ?";
+        }
+
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, serialNumber);
+            if (excludeId != null) {
+                ps.setInt(2, excludeId);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
      * Extract Device object from ResultSet
      */
     private Device extractDeviceFromResultSet(ResultSet rs) throws SQLException {

@@ -257,6 +257,36 @@
             font-size: 14px;
             color: #999;
         }
+
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
     </style>
 </head>
 <body>
@@ -265,7 +295,22 @@
     <div class="main-container">
         <div class="page-header">
             <h1>Device Inventory</h1>
+            <a href="${pageContext.request.contextPath}/management/devices/form" class="btn-add">
+                + Add New Device
+            </a>
         </div>
+
+        <c:if test="${param.success == 'true'}">
+            <div class="alert alert-success">
+                Device saved successfully!
+            </div>
+        </c:if>
+
+        <c:if test="${param.deleted == 'true'}">
+            <div class="alert alert-success">
+                Device deleted successfully!
+            </div>
+        </c:if>
 
         <!-- Statistics Cards -->
         <div class="stats-grid">

@@ -123,11 +123,8 @@ public class CategoryDAO {
         category.setName(rs.getString("name"));
         category.setDescription(rs.getString("description"));
         category.setDeleted(rs.getBoolean("isDeleted"));
-        
-        Timestamp createdAtTs = rs.getTimestamp("createdAt");
-        category.setCreatedAt(createdAtTs != null ? createdAtTs.toLocalDateTime() : null);
-        Timestamp updatedAtTs = rs.getTimestamp("updatedAt");
-        category.setUpdatedAt(updatedAtTs != null ? updatedAtTs.toLocalDateTime() : null);
+        category.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
+        category.setUpdatedAt(rs.getTimestamp("updatedAt").toLocalDateTime());
 
         int createdBy = rs.getInt("createdBy");
         category.setCreatedBy(rs.wasNull() ? null : createdBy);

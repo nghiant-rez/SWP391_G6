@@ -202,7 +202,7 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>Product Management</h1>
+            <h1>📦 Product Management</h1>
             <a href="${pageContext.request.contextPath}/management/products/create" 
                class="btn btn-success">
                 + Add New Product
@@ -210,10 +210,10 @@
         </div>
 
         <c:if test="${not empty param.success}">
-            <div class="alert alert-success"><c:out value="${param.success}"/></div>
+            <div class="alert alert-success">${param.success}</div>
         </c:if>
         <c:if test="${not empty param.error}">
-            <div class="alert alert-error"><c:out value="${param.error}"/></div>
+            <div class="alert alert-error">${param.error}</div>
         </c:if>
 
         <div class="toolbar">
@@ -228,7 +228,7 @@
                 <input type="text" 
                        name="keyword" 
                        placeholder="Search by name, model, brand..."
-                       value="<c:out value='${keyword}'/>">
+                       value="${keyword}">
                 
                 <select name="categoryId">
                     <option value="">All Categories</option>
@@ -252,7 +252,7 @@
                     </option>
                 </select>
                 
-                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="submit" class="btn btn-primary">🔍 Search</button>
                 <a href="${pageContext.request.contextPath}/management/products" 
                    class="btn" style="background: #95a5a6; color: white;">
                     Clear
@@ -297,7 +297,7 @@
                                                 <div style="width: 60px; height: 60px; background: #e9ecef; 
                                                             border-radius: 6px; display: flex; 
                                                             align-items: center; justify-content: center;">
-                                                    
+                                                    📦
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>

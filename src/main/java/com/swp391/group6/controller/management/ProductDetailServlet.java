@@ -27,13 +27,10 @@ public class ProductDetailServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
         User currentUser = (User) session.getAttribute("user");
+
         if (currentUser == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 
@@ -73,13 +70,10 @@ public class ProductDetailServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
         User currentUser = (User) session.getAttribute("user");
+
         if (currentUser == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 
@@ -153,13 +147,7 @@ public class ProductDetailServlet extends HttpServlet {
             }
             
             product.setImageUrl(imageUrl != null ? imageUrl.trim() : null);
-            
-            // Validate status field
-            String safeStatus = "ACTIVE";
-            if ("DISCONTINUED".equals(status)) {
-                safeStatus = "DISCONTINUED";
-            }
-            product.setStatus(safeStatus);
+            product.setStatus(status != null && !status.trim().isEmpty() ? status : "ACTIVE");
 
             // Update in database
             boolean success = productDAO.updateProduct(product);

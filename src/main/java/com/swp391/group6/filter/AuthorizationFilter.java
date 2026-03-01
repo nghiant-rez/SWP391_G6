@@ -87,6 +87,7 @@ public class AuthorizationFilter implements Filter {
         PERMISSION_MAP.put("/management/categories", "CATEGORY_READ");
 
         // Device Management (most specific first)
+        PERMISSION_MAP.put("/management/devices/form", "DEVICE_CREATE"); // Covers both create and update
         PERMISSION_MAP.put("/management/devices/detail", "DEVICE_READ");
         PERMISSION_MAP.put("/management/devices/create", "DEVICE_CREATE");
         PERMISSION_MAP.put("/management/devices/delete", "DEVICE_DELETE");

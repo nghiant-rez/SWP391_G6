@@ -79,6 +79,21 @@ public class AuthorizationFilter implements Filter {
         PERMISSION_MAP.put("/management/products/update", "PRODUCT_UPDATE");
         PERMISSION_MAP.put("/management/products", "PRODUCT_READ");
 
+        // Category Management (most specific first)
+        PERMISSION_MAP.put("/management/categories/detail", "CATEGORY_UPDATE");
+        PERMISSION_MAP.put("/management/categories/create", "CATEGORY_CREATE");
+        PERMISSION_MAP.put("/management/categories/delete", "CATEGORY_DELETE");
+        PERMISSION_MAP.put("/management/categories/update", "CATEGORY_UPDATE");
+        PERMISSION_MAP.put("/management/categories", "CATEGORY_READ");
+
+        // Device Management (most specific first)
+        PERMISSION_MAP.put("/management/devices/form", "DEVICE_CREATE"); // Covers both create and update
+        PERMISSION_MAP.put("/management/devices/detail", "DEVICE_READ");
+        PERMISSION_MAP.put("/management/devices/create", "DEVICE_CREATE");
+        PERMISSION_MAP.put("/management/devices/delete", "DEVICE_DELETE");
+        PERMISSION_MAP.put("/management/devices/update", "DEVICE_UPDATE");
+        PERMISSION_MAP.put("/management/devices", "DEVICE_READ");
+
         // Customer's own service request list
         PERMISSION_MAP.put(
             "/my-service-requests",

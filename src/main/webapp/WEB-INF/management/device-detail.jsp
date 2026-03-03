@@ -9,9 +9,13 @@
     <title>Device Details - CMMS</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background-color: #f5f7fa;
             color: #2c3e50;
@@ -21,64 +25,6 @@
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .page-header h1 {
-            font-size: 28px;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-
-        .btn-danger {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #c0392b;
         }
 
         .alert {
@@ -100,54 +46,218 @@
             border: 1px solid #ff7675;
         }
 
+        /* Detail Card with Blue Header */
         .detail-card {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #e1e8ed;
         }
 
         .card-header {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e9ecef;
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        .card-header-icon {
+            font-size: 24px;
+        }
+
+        .card-header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* Detail Grid Layout */
         .detail-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 25px;
+            margin-bottom: 25px;
         }
 
         .detail-item {
             display: flex;
             flex-direction: column;
+            gap: 8px;
         }
 
         .detail-label {
             font-size: 12px;
             font-weight: 600;
-            color: #7f8c8d;
+            color: #6c757d;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
         }
 
         .detail-value {
             font-size: 15px;
             color: #2c3e50;
-            word-wrap: break-word;
+            font-weight: 500;
         }
 
-        .status-badge, .condition-badge {
-            display: inline-block;
-            padding: 6px 12px;
+        .detail-value-large {
+            font-size: 20px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
             border-radius: 20px;
             font-size: 13px;
+            font-weight: 600;
+            min-width: 100px;
+        }
+
+        .status-active {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .status-available {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .status-sold {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .status-maintenance {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        .status-decommissioned {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Category Badge */
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background-color: #17a2b8;
+            color: white;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .category-icon {
+            font-size: 14px;
+        }
+
+        /* Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .btn-warning:hover {
+            background-color: #ffb300;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* Sub Device Counter */
+        .sub-device-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        .sub-device-icon {
+            font-size: 18px;
+        }
+
+        .empty-value {
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
             font-weight: 600;
             text-transform: uppercase;
         }
@@ -263,18 +373,6 @@
     <jsp:include page="/WEB-INF/includes/navbar.jsp"/>
 
     <div class="main-container">
-        <div class="page-header">
-            <h1>Device Details</h1>
-            <div class="header-actions">
-                <a href="${pageContext.request.contextPath}/management/devices" class="btn btn-secondary">
-                    ← Back to List
-                </a>
-                <a href="${pageContext.request.contextPath}/management/devices/form?id=${device.id}" class="btn btn-primary">
-                    ✏ Edit Device
-                </a>
-            </div>
-        </div>
-
         <c:if test="${param.updated == 'true'}">
             <div class="alert alert-success">
                 Device status updated successfully!
@@ -294,134 +392,113 @@
         </c:if>
 
         <div class="detail-card">
-            <div class="card-header">Device Information</div>
-            
-            <div class="detail-grid">
-                <div class="detail-item">
-                    <div class="detail-label">Device ID</div>
-                    <div class="detail-value">#${device.id}</div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-label">Product Name</div>
-                    <div class="detail-value">${device.productName}</div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-label">Serial Number</div>
-                    <div class="detail-value">${device.serialNumber}</div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-label">Status</div>
-                    <div class="detail-value">
-                        <c:choose>
-                            <c:when test="${device.status == 'AVAILABLE'}">
-                                <span class="status-badge status-available">Available</span>
-                            </c:when>
-                            <c:when test="${device.status == 'SOLD'}">
-                                <span class="status-badge status-sold">Sold</span>
-                            </c:when>
-                            <c:when test="${device.status == 'MAINTENANCE'}">
-                                <span class="status-badge status-maintenance">Maintenance</span>
-                            </c:when>
-                            <c:when test="${device.status == 'DECOMMISSIONED'}">
-                                <span class="status-badge status-decommissioned">Decommissioned</span>
-                            </c:when>
-                        </c:choose>
-                    </div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-label">Condition</div>
-                    <div class="detail-value">
-                        <c:choose>
-                            <c:when test="${device.condition == 'EXCELLENT'}">
-                                <span class="condition-badge condition-excellent">Excellent</span>
-                            </c:when>
-                            <c:when test="${device.condition == 'GOOD'}">
-                                <span class="condition-badge condition-good">Good</span>
-                            </c:when>
-                            <c:when test="${device.condition == 'FAIR'}">
-                                <span class="condition-badge condition-fair">Fair</span>
-                            </c:when>
-                        </c:choose>
-                    </div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-label">Current Location</div>
-                    <div class="detail-value">
-                        <c:choose>
-                            <c:when test="${not empty device.currentLocation}">
-                                ${device.currentLocation}
-                            </c:when>
-                            <c:otherwise>
-                                <span class="empty-value">Not specified</span>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-label">Created At</div>
-                    <div class="detail-value">
-                        <fmt:formatDate value="${device.createdAt}" pattern="MMM dd, yyyy HH:mm" />
-                    </div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-label">Last Updated</div>
-                    <div class="detail-value">
-                        <fmt:formatDate value="${device.updatedAt}" pattern="MMM dd, yyyy HH:mm" />
-                    </div>
-                </div>
+            <div class="card-header">
+                <span class="card-header-icon">ℹ️</span>
+                <span class="card-header-title">Chi tiết Thiết bị</span>
             </div>
+            
+            <div class="card-body">
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">ID THIẾT BỊ</div>
+                        <div class="detail-value-large">#${device.id}</div>
+                    </div>
 
-            <c:if test="${not empty device.notes}">
-                <div class="detail-grid" style="margin-top: 25px;">
-                    <div class="detail-item" style="grid-column: 1 / -1;">
-                        <div class="detail-label">Notes</div>
-                        <div class="detail-value">${device.notes}</div>
+                    <div class="detail-item">
+                        <div class="detail-label">TRẠNG THÁI</div>
+                        <div class="detail-value">
+                            <c:choose>
+                                <c:when test="${device.status == 'AVAILABLE'}">
+                                    <span class="status-badge status-active">Hoạt động</span>
+                                </c:when>
+                                <c:when test="${device.status == 'SOLD'}">
+                                    <span class="status-badge status-sold">Sold</span>
+                                </c:when>
+                                <c:when test="${device.status == 'MAINTENANCE'}">
+                                    <span class="status-badge status-maintenance">Maintenance</span>
+                                </c:when>
+                                <c:when test="${device.status == 'DECOMMISSIONED'}">
+                                    <span class="status-badge status-decommissioned">Decommissioned</span>
+                                </c:when>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
-            </c:if>
 
-            <div class="quick-actions">
-                <h3>Quick Actions</h3>
-                
-                <div class="action-buttons">
-                    <a href="${pageContext.request.contextPath}/management/devices/form?id=${device.id}" 
-                       class="btn btn-primary">
-                        ✏ Edit Full Details
-                    </a>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">TÊN THIẾT BỊ</div>
+                        <div class="detail-value">${device.serialNumber}</div>
+                    </div>
 
-                    <form method="post" action="${pageContext.request.contextPath}/management/devices/detail" 
-                          class="delete-form" 
-                          onsubmit="return confirm('Are you sure you want to delete this device?');">
-                        <input type="hidden" name="id" value="${device.id}">
-                        <input type="hidden" name="action" value="delete">
-                        <button type="submit" class="btn btn-danger">
-                            🗑 Delete Device
-                        </button>
-                    </form>
+                    <div class="detail-item">
+                        <div class="detail-label">THỜI GIAN BẢO TRÌ (THÁNG)</div>
+                        <div class="detail-value">
+                            <span style="background-color: #ff9800; color: white; padding: 6px 12px; border-radius: 16px; display: inline-block;">
+                                ⏰ ${device.currentLocation != null && !device.currentLocation.isEmpty() ? device.currentLocation : '6'}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-                <form method="post" action="${pageContext.request.contextPath}/management/devices/detail" 
-                      class="status-form">
-                    <input type="hidden" name="id" value="${device.id}">
-                    <input type="hidden" name="action" value="updateStatus">
-                    
-                    <label for="status" style="font-weight: 500; min-width: 120px;">Quick Status Update:</label>
-                    <select id="status" name="status" class="form-control" style="min-width: 200px;">
-                        <option value="AVAILABLE" ${device.status == 'AVAILABLE' ? 'selected' : ''}>Available</option>
-                        <option value="SOLD" ${device.status == 'SOLD' ? 'selected' : ''}>Sold</option>
-                        <option value="MAINTENANCE" ${device.status == 'MAINTENANCE' ? 'selected' : ''}>Maintenance</option>
-                        <option value="DECOMMISSIONED" ${device.status == 'DECOMMISSIONED' ? 'selected' : ''}>Decommissioned</option>
-                    </select>
-                    
-                    <button type="submit" class="btn btn-primary">Update Status</button>
-                </form>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">DANH MỤC</div>
+                        <div class="detail-value">
+                            <span class="category-badge">
+                                <span class="category-icon">🔧</span>
+                                <span>${device.productName}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">SỐ LƯỢNG SUB DEVICE CÒN LẠI</div>
+                        <div class="detail-value">
+                            <span class="sub-device-counter">
+                                <span class="sub-device-icon">📦</span>
+                                <span>10 sản phẩm</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">MÔ TẢ</div>
+                        <div class="detail-value">
+                            <c:choose>
+                                <c:when test="${not empty device.notes}">
+                                    ${device.notes}
+                                </c:when>
+                                <c:otherwise>
+                                    Máy phát điện Cummins 20kVA
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">NGÀY TẠO</div>
+                        <div class="detail-value">
+                            📅 <fmt:formatDate value="${device.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="${pageContext.request.contextPath}/management/devices/sub-devices?deviceId=${device.id}" class="btn btn-primary">
+                        📋 Xem danh sách Sub Device còn lại
+                    </a>
+                    <a href="${pageContext.request.contextPath}/management/devices/form?id=${device.id}" 
+                       class="btn btn-warning">
+                        ✏️ Chỉnh sửa
+                    </a>
+                    <a href="${pageContext.request.contextPath}/management/devices" 
+                       class="btn btn-secondary">
+                        ← Quay lại danh sách
+                    </a>
+                </div>
             </div>
         </div>
     </div>

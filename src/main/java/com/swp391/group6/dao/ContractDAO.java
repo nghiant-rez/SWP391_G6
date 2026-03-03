@@ -90,7 +90,8 @@ public class ContractDAO {
             }
 
         }catch (SQLException e){
-            System.out.println("ContractDAO.findWithFilters failed: " + e.getMessage());
+            System.out.println("ContractDAO.findWithFilters failed: " +
+                                e.getMessage());
             e.printStackTrace();
         }
 

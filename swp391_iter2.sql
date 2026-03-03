@@ -473,6 +473,128 @@ CREATE INDEX `idx_service_requests_status` ON `service_requests`(`status`);
 
 -- PART 8: VERIFICATION QUERIES
 
+
+-- ============================================
+-- SAMPLE CONTRACT DATA
+-- Note: urlContract column not included
+--       (to be implemented later)
+-- ============================================
+
+-- Prerequisite check:
+-- users: id=3 (STAFF/sales), id=4 (CUSTOMER),
+--        id=2 (MANAGER)
+-- devices: id=1..7 (from seed data)
+
+-- CONTRACT 1: DRAFT - Staff tao, chua gui duyet
+INSERT INTO `contracts`
+    (`contractCode`, `customerId`, `staffId`,
+     `managerId`, `title`, `totalAmount`,
+     `saleDate`, `status`)
+VALUES
+('CTR-2025-001', 4, 3,
+ NULL,
+ 'Hop dong mua may xuc CAT320 - Khach hang A',
+ 5000000000.00,
+ '2025-03-01', 'DRAFT');
+
+-- CONTRACT 2: PENDING - Da gui cho manager duyet
+INSERT INTO `contracts`
+    (`contractCode`, `customerId`, `staffId`,
+     `managerId`, `title`, `totalAmount`,
+     `saleDate`, `status`)
+VALUES
+('CTR-2025-002', 4, 3,
+ 2,
+ 'Hop dong thue may cau LTM1050 - Khach hang A',
+ 15000000000.00,
+ '2025-03-05', 'PENDING');
+
+-- CONTRACT 3: APPROVED - Manager da duyet
+INSERT INTO `contracts`
+    (`contractCode`, `customerId`, `staffId`,
+     `managerId`, `title`, `totalAmount`,
+     `saleDate`, `status`, `approvedAt`)
+VALUES
+('CTR-2025-003', 4, 3,
+ 2,
+ 'Hop dong mua may uc CAT305 - Khach hang A',
+ 2000000000.00,
+ '2025-02-20', 'APPROVED',
+ '2025-02-22 10:30:00');
+
+-- CONTRACT 4: REJECTED - Manager tu choi
+INSERT INTO `contracts`
+    (`contractCode`, `customerId`, `staffId`,
+     `managerId`, `title`, `totalAmount`,
+     `saleDate`, `status`,
+     `rejectionReason`)
+VALUES
+('CTR-2025-004', 4, 3,
+ 2,
+ 'Hop dong mua may nen D6 - Khach hang A',
+ 6000000000.00,
+ '2025-02-10', 'REJECTED',
+ 'Thieu tai lieu bao lanh. Yeu cau bo sung.');
+
+-- CONTRACT 5: COMPLETED - Da hoan thanh
+INSERT INTO `contracts`
+    (`contractCode`, `customerId`, `staffId`,
+     `managerId`, `title`, `totalAmount`,
+     `saleDate`, `status`, `approvedAt`)
+VALUES
+('CTR-2024-099', 4, 3,
+ 2,
+ 'Hop dong mua wheel loader CAT950',
+ 4000000000.00,
+ '2024-12-15', 'COMPLETED',
+ '2024-12-17 09:00:00');
+
+
+-- ============================================
+-- CONTRACT DETAILS
+-- (devices included in each contract)
+-- ============================================
+
+-- CTR-2025-001 (DRAFT): may xuc CAT320-2024-001
+INSERT INTO `contract_details`
+    (`contractId`, `deviceId`, `unitPrice`, `notes`)
+VALUES
+(1, 1, 5000000000.00,
+ 'May xuc CAT320 moi 100%, bao hanh 2 nam');
+
+-- CTR-2025-002 (PENDING): may cau LTM1050
+-- Note: device id=5 (LTM1050-2023-001)
+INSERT INTO `contract_details`
+    (`contractId`, `deviceId`, `unitPrice`, `notes`)
+VALUES
+(2, 5, 15000000000.00,
+ 'May cau 50T, kem phu kien lap dat');
+
+-- CTR-2025-003 (APPROVED): may xuc mini CAT305
+-- Note: device id=4 (CAT305-2024-001)
+INSERT INTO `contract_details`
+    (`contractId`, `deviceId`, `unitPrice`, `notes`)
+VALUES
+(3, 4, 2000000000.00,
+ 'May xuc mini, giao hang tai HCMC');
+
+-- CTR-2025-004 (REJECTED): may nen D6
+-- Note: device id=7 (D6-2022-001)
+INSERT INTO `contract_details`
+    (`contractId`, `deviceId`, `unitPrice`, `notes`)
+VALUES
+(4, 7, 6000000000.00,
+ 'May nen D6 cu, can kiem tra them');
+
+-- CTR-2024-099 (COMPLETED): wheel loader CAT950
+-- Note: device id=6 (CAT950-2024-001)
+INSERT INTO `contract_details`
+    (`contractId`, `deviceId`, `unitPrice`, `notes`)
+VALUES
+(5, 6, 4000000000.00,
+ 'Da ban giao va nghiem thu xong');
+
+
 -- Check role permissions
 SELECT r.name AS role, p.name AS permission, p.displayName
 FROM roles r
@@ -501,3 +623,25 @@ FROM devices d
 JOIN products p ON d.productId = p.id
 WHERE d.isDeleted = 0
 ORDER BY d.status, p.name;
+
+
+-- ============================================
+-- VERIFICATION
+-- ============================================
+SELECT
+    c.id,
+    c.contractCode,
+    cu.fullName  AS customer,
+    s.fullName   AS staff,
+    m.fullName   AS manager,
+    c.title,
+    c.status,
+    c.totalAmount,
+    c.saleDate,
+    c.createdAt
+FROM contracts c
+JOIN users cu ON c.customerId = cu.id
+JOIN users s  ON c.staffId    = s.id
+LEFT JOIN users m ON c.managerId = m.id
+WHERE c.isDeleted = 0
+ORDER BY c.id;

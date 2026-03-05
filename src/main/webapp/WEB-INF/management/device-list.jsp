@@ -37,143 +37,116 @@
             font-weight: 600;
         }
 
-        /* Statistics Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 25px;
-            border-radius: 12px;
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
-        }
-
-        .stat-card.available {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-
-        .stat-card.sold {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
-        .stat-card.maintenance {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        }
-
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.95;
-            margin-bottom: 8px;
-        }
-
-        .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        /* Filters */
-        .filter-section {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-        }
-
-        .filter-row {
-            display: grid;
-            grid-template-columns: 2fr 1.5fr 1.5fr auto;
-            gap: 15px;
-            align-items: end;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-size: 13px;
-            font-weight: 500;
-            color: #555;
-            margin-bottom: 6px;
-        }
-
-        .form-group input,
-        .form-group select {
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .btn-filter {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .btn-filter:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-reset {
-            background: #6c757d;
-            color: white;
-            border: none;
+        .btn-add {
+            background-color: #e9ecef;
+            color: #495057;
             padding: 10px 20px;
             border-radius: 6px;
+            text-decoration: none;
             font-size: 14px;
-            cursor: pointer;
-            margin-left: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 1px solid #ddd;
         }
 
-        /* Table */
+        .btn-add:hover {
+            background-color: #dee2e6;
+            transform: translateY(-1px);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* Table Container */
         .table-container {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             overflow: hidden;
+            border: 1px solid #e1e8ed;
         }
 
+        .table-header {
+            padding: 25px 30px;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .table-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        /* Filters Row */
+        .filters-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group select {
+            padding: 8px 35px 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: white;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            min-width: 180px;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
         }
 
         thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
         }
 
         thead th {
-            padding: 16px;
+            padding: 15px 20px;
             text-align: left;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
+            color: #495057;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            border-bottom: 2px solid #dee2e6;
         }
 
         tbody tr {
@@ -185,26 +158,33 @@
             background-color: #f8f9fa;
         }
 
-        tbody td {
-            padding: 16px;
-            font-size: 14px;
-            color: #2c3e50;
+        tbody tr:last-child {
+            border-bottom: none;
         }
 
-        /* Status Badges */
+        tbody td {
+            padding: 18px 20px;
+            font-size: 14px;
+            color: #2c3e50;
+            vertical-align: middle;
+        }
+
+        tbody td:first-child {
+            font-weight: 500;
+        }
+
+        /* Status Badge */
         .status-badge {
             display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 5px 12px;
+            border-radius: 12px;
             font-size: 12px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .status-badge.available {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: #d1f4e0;
+            color: #0a7d3e;
         }
 
         .status-badge.sold {
@@ -222,17 +202,74 @@
             color: #721c24;
         }
 
-        /* Action Links */
-        .action-link {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .action-link:hover {
-            color: #764ba2;
-            text-decoration: underline;
+        .btn-action {
+            padding: 6px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.2s ease;
+            border: 1px solid;
+            display: inline-block;
+        }
+
+        .btn-edit {
+            background-color: #fff;
+            color: #495057;
+            border-color: #ced4da;
+        }
+
+        .btn-edit:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .btn-delete {
+            background-color: #fff;
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-delete:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            gap: 5px;
+        }
+
+        .page-link {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .page-link:hover {
+            background-color: #e9ecef;
+        }
+
+        .page-link.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
         }
 
         /* Empty State */
@@ -258,34 +295,24 @@
             color: #999;
         }
 
-        .btn-add {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
+        @media (max-width: 768px) {
+            .filters-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
 
-        .btn-add:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
 
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
+            .filter-group select {
+                width: 100%;
+            }
 
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            .action-buttons {
+                flex-direction: row;
+            }
         }
     </style>
 </head>
@@ -293,13 +320,6 @@
     <jsp:include page="/WEB-INF/includes/navbar.jsp" />
 
     <div class="main-container">
-        <div class="page-header">
-            <h1>Device Inventory</h1>
-            <a href="${pageContext.request.contextPath}/management/devices/form" class="btn-add">
-                + Add New Device
-            </a>
-        </div>
-
         <c:if test="${param.success == 'true'}">
             <div class="alert alert-success">
                 Device saved successfully!
@@ -312,73 +332,59 @@
             </div>
         </c:if>
 
-        <!-- Statistics Cards -->
-        <div class="stats-grid">
-            <div class="stat-card available">
-                <div class="stat-label">Available</div>
-                <div class="stat-value">${availableCount}</div>
-            </div>
-            <div class="stat-card sold">
-                <div class="stat-label">Sold</div>
-                <div class="stat-value">${soldCount}</div>
-            </div>
-            <div class="stat-card maintenance">
-                <div class="stat-label">Maintenance</div>
-                <div class="stat-value">${maintenanceCount}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Total Devices</div>
-                <div class="stat-value">${totalCount}</div>
-            </div>
-        </div>
-
-        <!-- Filter Section -->
-        <div class="filter-section">
-            <form method="get" action="${pageContext.request.contextPath}/management/devices">
-                <div class="filter-row">
-                    <div class="form-group">
-                        <label for="keyword">Search</label>
-                        <input type="text" 
-                               id="keyword" 
-                               name="keyword" 
-                               placeholder="Serial number or product name..."
-                               value="${keyword}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="productId">Product</label>
-                        <select id="productId" name="productId">
-                            <option value="ALL">All Products</option>
-                            <c:forEach var="product" items="${products}">
-                                <option value="${product.id}" 
-                                        ${selectedProductId == product.id.toString() ? 'selected' : ''}>
-                                    ${product.name}
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select id="status" name="status">
-                            <option value="ALL" ${selectedStatus == 'ALL' || selectedStatus == null ? 'selected' : ''}>All Status</option>
-                            <option value="AVAILABLE" ${selectedStatus == 'AVAILABLE' ? 'selected' : ''}>Available</option>
-                            <option value="SOLD" ${selectedStatus == 'SOLD' ? 'selected' : ''}>Sold</option>
-                            <option value="MAINTENANCE" ${selectedStatus == 'MAINTENANCE' ? 'selected' : ''}>Maintenance</option>
-                            <option value="DECOMMISSIONED" ${selectedStatus == 'DECOMMISSIONED' ? 'selected' : ''}>Decommissioned</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <button type="submit" class="btn-filter">Filter</button>
-                        <a href="${pageContext.request.contextPath}/management/devices" class="btn-reset">Reset</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-
         <!-- Devices Table -->
         <div class="table-container">
+            <div class="table-header">
+                <h2 class="table-title">List Device</h2>
+                
+                <div style="text-align: right; margin-bottom: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+                    <a href="${pageContext.request.contextPath}/management/devices/deleted" 
+                       style="padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; border: 1px solid #6c757d;">
+                        🗑️ Thiết bị đã xóa
+                    </a>
+                    <a href="${pageContext.request.contextPath}/management/devices/form" class="btn-add">
+                        Add Device
+                    </a>
+                </div>
+
+                <!-- Filters -->
+                <form method="get" action="${pageContext.request.contextPath}/management/devices" style="margin: 0;">
+                    <div class="filters-row">
+                        <div class="filter-group">
+                            <select id="filterName" name="keyword" onchange="this.form.submit()">
+                                <option value="">Name</option>
+                                <c:forEach var="device" items="${devices}">
+                                    <option value="${device.serialNumber}" ${keyword == device.serialNumber ? 'selected' : ''}>
+                                        ${device.serialNumber}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <select id="filterMaintenance" name="status" onchange="this.form.submit()">
+                                <option value="">Maintaince_time</option>
+                                <option value="MAINTENANCE" ${selectedStatus == 'MAINTENANCE' ? 'selected' : ''}>Under Maintenance</option>
+                                <option value="AVAILABLE" ${selectedStatus == 'AVAILABLE' ? 'selected' : ''}>Available</option>
+                                <option value="SOLD" ${selectedStatus == 'SOLD' ? 'selected' : ''}>Sold</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <select id="filterCategory" name="productId" onchange="this.form.submit()">
+                                <option value="">Category</option>
+                                <c:forEach var="product" items="${products}">
+                                    <option value="${product.id}" 
+                                            ${selectedProductId == product.id.toString() ? 'selected' : ''}>
+                                        ${product.name}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <c:choose>
                 <c:when test="${empty devices}">
                     <div class="empty-state">
@@ -400,19 +406,31 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Serial Number</th>
-                                <th>Product</th>
-                                <th>Status</th>
-                                <th>Notes</th>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Image</th>
+                                <th>Maintaince_time</th>
                                 <th>Created At</th>
-                                <th>Actions</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="device" items="${devices}">
                                 <tr>
+                                    <td>#${device.id}</td>
                                     <td><strong>${device.serialNumber}</strong></td>
-                                    <td>${device.productName}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${not empty device.notes}">
+                                                ${device.notes.length() > 40 ? device.notes.substring(0, 40).concat('...') : device.notes}
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${device.productName}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>-</td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${device.status == 'AVAILABLE'}">
@@ -430,28 +448,29 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <c:choose>
-                                            <c:when test="${not empty device.notes}">
-                                                ${device.notes.length() > 50 ? device.notes.substring(0, 50).concat('...') : device.notes}
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span style="color: #999;">No notes</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td>
                                         <c:if test="${device.createdAt != null}">
-                                            <%= ((com.swp391.group6.model.Device)pageContext.findAttribute("device")).getCreatedAt().format(DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm")) %>
+                                            <%= ((com.swp391.group6.model.Device)pageContext.findAttribute("device")).getCreatedAt().format(DateTimeFormatter.ofPattern("MMM dd, yyyy")) %>
                                         </c:if>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/management/devices/detail?id=${device.id}" 
-                                           class="action-link">View Details</a>
+                                        <div class="action-buttons">
+                                            <a href="${pageContext.request.contextPath}/management/devices/form?id=${device.id}" 
+                                               class="btn-action btn-edit">Edit Device</a>
+                                            <a href="${pageContext.request.contextPath}/management/devices/detail?id=${device.id}" 
+                                               class="btn-action btn-delete">Delete Device</a>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <a href="#" class="page-link active">1</a>
+                        <a href="#" class="page-link">2</a>
+                        <a href="#" class="page-link">3</a>
+                    </div>
                 </c:otherwise>
             </c:choose>
         </div>

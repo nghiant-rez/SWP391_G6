@@ -208,7 +208,10 @@ public class AuthorizationFilter implements Filter {
                 path.equals("/mock-login") ||
                 path.equals("/home") ||
                 path.equals("/index.jsp") ||
-                path.startsWith("/demo");
+                path.startsWith("/demo") ||
+                path.startsWith("/products") ||  // Public product catalog
+                path.equals("/forgot-password") ||
+                path.equals("/admin-password-reset");
     }
 
     /**

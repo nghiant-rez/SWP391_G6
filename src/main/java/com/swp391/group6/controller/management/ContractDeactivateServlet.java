@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "ContractDeactivateServlet",
-            urlPatterns = {"/contracts/deactivate"})
+            urlPatterns = {"/management/contracts/deactivate"})
 public class ContractDeactivateServlet extends HttpServlet {
 
     private final ContractDAO contractDAO = new ContractDAO();
@@ -35,6 +35,7 @@ public class ContractDeactivateServlet extends HttpServlet {
 
         User currentUser = (User)session.getAttribute("user");
 
+        //Kiểm tra hệ quền CONTRACT_APPROVE
         if (!authService.hasPermission(
                 currentUser.getId(), "CONTRACT_APPROVE")){
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -44,6 +45,7 @@ public class ContractDeactivateServlet extends HttpServlet {
             return;
         }
 
+        //lấy contractId từ form
         String contractIdParam = request.getParameter("contractId");
         if (contractIdParam == null || contractIdParam.isEmpty()) {
             response.sendRedirect(
@@ -52,28 +54,17 @@ public class ContractDeactivateServlet extends HttpServlet {
             return;
         }
 
-        String creatorIdParam = request.getParameter("creatorId");
-        if (creatorIdParam == null || creatorIdParam.isEmpty()) {
-            response.sendRedirect(
-                    request.getContextPath() + "/management/contracts?error=Invalid+creator+ID");
-            return;
-        }
-
         try {
-            int creatorId = Integer.parseInt(creatorIdParam);
-            boolean success = contractDAO.deactivate(
-                    creatorId, currentUser.getId());
+            int contractId = Integer.parseInt(contractIdParam);
+            boolean success = contractDAO.deactivate(contractId, currentUser.getId());
 
             if (success) {
-                response.sendRedirect(
-                        request.getContextPath() + "/management/contracts?message=Contract+deactivated");
+                response.sendRedirect(request.getContextPath() + "/management/contracts?message=Contract+deactivated");
             }else {
-                response.sendRedirect(
-                        request.getContextPath() + "/management/contracts?error=Deactivate+failed");
+                response.sendRedirect(request.getContextPath() + "/management/contracts?error=Deactivate+failed");
             }
         }catch (NumberFormatException e){
-            response.sendRedirect(
-                    request.getContextPath() + "/management/contracts?error=Invalid+contract+ID");
+            response.sendRedirect(request.getContextPath() + "/management/contracts?error=Invalid+contract+ID");
         }
     }
 }

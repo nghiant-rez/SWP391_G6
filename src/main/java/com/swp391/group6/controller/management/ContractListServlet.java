@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "contractListServlet",
-            urlPatterns = {"/contracts/list"})
+        urlPatterns = {"/management/contracts"})
 public class ContractListServlet extends HttpServlet {
 
     private final ContractDAO contractDAO = new ContractDAO();
@@ -25,7 +25,7 @@ public class ContractListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
@@ -33,10 +33,25 @@ public class ContractListServlet extends HttpServlet {
             return;
         }
 
-        User currentUser = (User)session.getAttribute("user");
+        User currentUser = (User) session.getAttribute("user");
+        int userId = currentUser.getId();
 
-        //Filter / sort params
+        // Xác định role theo permission
+        boolean isManager = authService.hasPermission(userId, "CONTRACT_APPROVE");
+        boolean isStaff = !isManager
+                && authService.hasPermission(userId, "CONTRACT_CREATE");
+        boolean isCustomer = !isManager && !isStaff
+                && authService.hasPermission(userId, "CONTRACT_READ");
 
+        // Owner filter giới hạn dữ liệu
+        String ownerFilter = null;
+        if (isStaff) {
+            ownerFilter = "staff";
+        } else if (isCustomer) {
+            ownerFilter = "customer";
+        }
+
+        // Filter / sort params
         String search = request.getParameter("search");
         String sortBy = request.getParameter("sortBy");
         String order = request.getParameter("order");
@@ -45,12 +60,12 @@ public class ContractListServlet extends HttpServlet {
         if (sortBy == null || sortBy.isEmpty()) sortBy = "id";
         if (order == null || order.isEmpty()) order = "ASC";
 
+        // creatorId chỉ có hiệu lực khi MANAGER
         Integer creatorId = null;
-        if (creatorIdParam != null && !creatorIdParam.isEmpty()) {
+        if (isManager && creatorIdParam != null && !creatorIdParam.isEmpty()) {
             try {
                 creatorId = Integer.parseInt(creatorIdParam);
             } catch (NumberFormatException ignored) {
-                // ignore invalid param
             }
         }
 
@@ -61,30 +76,29 @@ public class ContractListServlet extends HttpServlet {
             try {
                 currentPage = Integer.parseInt(pageParam);
                 if (currentPage < 1) currentPage = 1;
-            }catch (NumberFormatException ignored) {
+            } catch (NumberFormatException ignored) {
                 currentPage = 1;
             }
         }
 
         List<Contract> contracts = contractDAO.findWithFilters(
-                search, sortBy, order, creatorId, currentPage, PAGE_SIZE);
+                search, sortBy, order, creatorId, ownerFilter, userId,
+                currentPage, PAGE_SIZE);
 
         int totalContracts = contractDAO.countWithFilters(
-                search, sortBy, order, creatorId);
+                search, sortBy, order, creatorId, ownerFilter, userId);
 
+        // FIX: tính totalPages (đây là phần bạn đang thiếu)
         int totalPages = (int) Math.ceil((double) totalContracts / PAGE_SIZE);
         if (totalPages < 1) totalPages = 1;
 
-        // Permission checks for UI
-        boolean canCreate = authService.hasPermission(
-                currentUser.getId(), "CONTRACT_CREATE");
-        boolean canUpdate = authService.hasPermission(
-                currentUser.getId(), "CONTRACT_UPDATE");
-        boolean canApprove = authService.hasPermission(
-                currentUser.getId(), "CONTRACT_APPROVE");
+        // UI permissions
+        boolean canCreate = authService.hasPermission(userId, "CONTRACT_CREATE");
+        boolean canUpdate = authService.hasPermission(userId, "CONTRACT_UPDATE");
+        boolean canApprove = isManager;
 
-        // Staff list for creator dropdown
-        List<User> staffList = contractDAO.getAllStaff();
+        // Staff list: chỉ manager cần dropdown
+        List<User> staffList = isManager ? contractDAO.getAllStaff() : List.of();
 
         // Bind attributes
         request.setAttribute("contracts", contracts);
@@ -95,6 +109,14 @@ public class ContractListServlet extends HttpServlet {
         request.setAttribute("canUpdate", canUpdate);
         request.setAttribute("canApprove", canApprove);
         request.setAttribute("staffList", staffList);
+
+        // Flags cho JSP
+        request.setAttribute("isManager", isManager);
+        request.setAttribute("isStaff", isStaff);
+        request.setAttribute("isCustomer", isCustomer);
+
+        // Đúng tên để JSP dùng
+        request.setAttribute("currentUserId", userId);
 
         // Preserve filter values
         request.setAttribute("searchValue", search);

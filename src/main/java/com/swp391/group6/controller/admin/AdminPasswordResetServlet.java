@@ -29,7 +29,7 @@ public class AdminPasswordResetServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException{
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
 
         //check 1: login
         if(session == null || session.getAttribute("user") == null){
@@ -55,6 +55,7 @@ public class AdminPasswordResetServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException{
+
         HttpSession session = request.getSession();
 
         // check authentication & authorization
@@ -120,6 +121,7 @@ public class AdminPasswordResetServlet extends HttpServlet {
 
         if(!passwordUpdate){
             response.sendRedirect(request.getContextPath() + "/admin/password-reset?error=update_password_failed");
+            return;
         }
 
         //4. Gui email cho user
@@ -140,23 +142,39 @@ public class AdminPasswordResetServlet extends HttpServlet {
     }
 
     // xu ly reject request
+// xu ly reject request
     private void handleReject(PasswordResetRequest resetRequest, int adminId,
-                               HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
+                              HttpServletRequest request, HttpServletResponse response)
+            throws IOException{
 
         String reason = request.getParameter("reason");
 
         if(reason == null || reason.trim().isEmpty()){
-            reason = "không đủ điều kiện";
+            reason = "Không đủ điều kiện xác minh";
         }
 
-        boolean sucess = resetDAO.rejectRequest(resetRequest.getId(), reason, adminId);
+        //1. Update request status -> REJECTED
+        boolean success = resetDAO.rejectRequest(resetRequest.getId(), reason, adminId);
 
-        if(sucess){
-            System.out.println("Password reset rejected for: " + resetRequest.getEmail());
-            response.sendRedirect(request.getContextPath() + "/admin/password-reset?success=rejected");
-        }else {
+        if(!success){
             response.sendRedirect(request.getContextPath() + "/admin/password-reset?error=reject_failed");
+            return;
+        }
+
+        //2. Gửi email thông báo từ chối
+        boolean emailSent = EmailUtil.sendPasswordRejectEmail(
+                resetRequest.getEmail(),
+                resetRequest.getUserFullName(),
+                reason
+        );
+
+        if(emailSent){
+            System.out.println("   Password reset rejected for: " + resetRequest.getEmail());
+            System.out.println("   Reason: " + reason);
+            response.sendRedirect(request.getContextPath() + "/admin/password-reset?success=rejected");  // ✅ SỬA
+        }else {
+            System.err.println(" ️ Request rejected but email failed for: " + resetRequest.getEmail());
+            response.sendRedirect(request.getContextPath() + "/admin/password-reset?success=rejected&warning=email_failed");  // ✅ SỬA
         }
     }
 }

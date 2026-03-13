@@ -331,7 +331,7 @@
                 <div class="search-group">
                     <input type="text"
                            name="search"
-                           placeholder="Tim kiem..."
+                           placeholder="Search by customer name, creators"
                            value="<c:out value='${searchValue}'/>">
                     <button type="submit"
                             class="btn btn-primary">

@@ -165,27 +165,27 @@ public class ContractDAO {
                         "WHERE c.isDeleted = 0 "
         );
 
-        appendOwnerFilter(sql,params,ownerFilter, currentUserId);
+        appendOwnerFilter(sql, params, ownerFilter, currentUserId);
 
-        if(creatorId != null && ownerFilter == null){
+        if (creatorId != null && ownerFilter == null) {
             sql.append("AND c.staffId = ? ");
             params.add(creatorId);
         }
 
-        appendSreach(sql,params,search);
+        appendSreach(sql, params, search);
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql.toString())) {
 
             bindParams(ps, params);
             try (ResultSet rs = ps.executeQuery()) {
-                if(rs.next()){
+                if (rs.next()) {
                     return rs.getInt(1);
                 }
             }
 
         } catch (SQLException e) {
-            System.err.println("ContractDAO.coundWithFilters failed: " +
+            System.err.println("ContractDAO.countWithFilters failed: " +
                     e.getMessage());
             e.printStackTrace();
         }
@@ -254,11 +254,13 @@ public class ContractDAO {
     }
 
     // Deactivate a contract (set status = REJECTED)
-    public boolean deactivate(int id, int managerId){
-        String sql = "UPDATE contracts SET status = 'REJECTED', " +
-                "managerId = ?, approvedAt = NOW(), " +
-                "updatedAt = NOW() " +
-                "WHERE id = ? AND isDeleted = 0 ";
+    public boolean deactivate(int id, int managerId) {
+        // FIX A: chỉ cho deactivate khi DRAFT/PENDING
+        String sql = "UPDATE contracts " +
+                "SET status = 'REJECTED', " +
+                "managerId = ?, approvedAt = NOW(), updatedAt = NOW() " +
+                "WHERE id = ? AND isDeleted = 0 " +
+                "AND status IN ('DRAFT', 'PENDING')";
 
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -267,7 +269,7 @@ public class ContractDAO {
             ps.setInt(2, id);
             return ps.executeUpdate() > 0;
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.err.println("ContractDAO.deactivate failed: " + e.getMessage());
             e.printStackTrace();
         }
